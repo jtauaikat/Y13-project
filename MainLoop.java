@@ -5,12 +5,23 @@
  */
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import java.awt.Dimension;
 import java.awt.event.*;  
+import java.awt.Image;
+import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Scanner;
+import java.awt.Image;
+import javax.swing.JButton;   
+
+
 
 
 public class MainLoop extends JFrame implements ActionListener{
-   
+    
+    
+    
     JButton gridButton; 
     int gridSize = 10;
     int buttonSize = 30;
@@ -28,6 +39,8 @@ public class MainLoop extends JFrame implements ActionListener{
                 gridButton.setBounds(buttonXPosition,buttonYPosition,buttonSize, buttonSize);
                 gridButton.setFocusable(false);
                 gridButton.addActionListener(this);
+                gridButton.setIcon(new ImageIcon("blueRect.png"));
+
                 this.add(gridButton);
                 buttonXPosition += buttonSize;
             }
