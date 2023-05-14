@@ -14,14 +14,16 @@ import java.awt.event.*;
 import java.util.Scanner;
 import java.awt.Image;
 import javax.swing.JButton;   
-
-
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainLoop extends JFrame implements ActionListener{
-    
-    
-    
+    int board[][];
+    Random rand = new Random();
+    int columns = 5;
+    int rows = 5;
+
     JButton gridButton; 
     int gridSize = 10;
     int buttonSize = 30;
@@ -29,9 +31,11 @@ public class MainLoop extends JFrame implements ActionListener{
         Integer buttonLabel = 0;
         int buttonYPosition = 100;
         int buttonXPosition = 100;
+        board = new int[rows][columns];
+        printRandBoard( board, rows, columns);
         for(int buttonYCount = 0; buttonYCount<gridSize; buttonYCount++){
             buttonLabel += 100;
-            
+
             for(int buttonXCount=0; buttonXCount<gridSize; buttonXCount++){
                 buttonLabel++;
                 gridButton = new JButton();
@@ -56,8 +60,51 @@ public class MainLoop extends JFrame implements ActionListener{
         this.toFront();  // Not too sure what this does, commenting out makes no apparent difference
         this.setVisible(true);
     }
+
     public void actionPerformed(ActionEvent e){
         String name = e.getActionCommand();
         System.out.println(name);
+    }
+
+    void printRandBoard (int board[][], int rows, int columns){
+        for(int yModifer= 0; yModifer<columns; yModifer++){
+            for(int xModifer = 0; xModifer<rows; xModifer++){
+                board[yModifer][xModifer] = (rand.nextInt(2))*(rand.nextInt(2));
+                wrapPrint(board [yModifer] [xModifer] + "  ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    void arrayNeighbours(int board[][], int rows, int columns){
+        //  future = new int[rows][columns];
+
+        for (int y= 0; y< rows; y++)
+        {
+            for (int x= 0; x< columns; x++)
+            {
+
+                int aliveNeighbours = 0;
+                // alive neigbhours is cells which are alive near a selected cell 
+                //adds all living cells to total
+                for (int yModifer= -1; yModifer<= 1; yModifer++)
+                    for (int xModifer = -1; xModifer <= 1; xModifer++)
+                        if ((y+yModifer>=0 && y+yModifer<rows) && (x+xModifer>=0 && x+xModifer<columns)){
+
+                            aliveNeighbours += board[y+ yModifer][x+ xModifer];
+                        }
+                //sub self form total
+
+            }
+        }
+    }
+
+    
+    public static void wrapPrint(String output) {    
+        for (int i = 0; i<output.length(); i++) {
+            char c = output.charAt(i);
+            System.out.print(c);   
+        }
     }
 }
