@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class MainLoop extends JFrame implements ActionListener{
     int board[][];
     Random rand = new Random();
-    int columns = 5;
-    int rows = 5;
+    int columns = 10;
+    int rows = 10;
 
     JButton gridButton; 
     int gridSize = 10;
