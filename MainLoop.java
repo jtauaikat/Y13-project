@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- *18/05/23
- *Generating button grid
+ *22/05/23
+ *Implementing board class
  */
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -22,6 +22,8 @@ public class MainLoop extends JFrame implements ActionListener{
     int columns = 10;
     int rows = 10;
 
+    public int[][] board = new int[rows][columns];
+
     JButton gridButton; 
     int gridSize = 10;
     int buttonSize = 30;
@@ -31,7 +33,8 @@ public class MainLoop extends JFrame implements ActionListener{
         int buttonYPosition = 100;
         int buttonXPosition = 100;
         
-        Board.printRandBoard( board, gridSize, gridSize, mineCount, gridSize);
+        randBoardGen();
+
         for(int buttonYCount = 0; buttonYCount<gridSize; buttonYCount++){
             buttonLabel += 100;
 
@@ -62,12 +65,36 @@ public class MainLoop extends JFrame implements ActionListener{
         this.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e){
-        String name = e.getActionCommand();
-        System.out.println(name);
+    void randBoardGen (){
+        int cellGenX;
+        int cellGenY;
+        int mineGen = 0;
+        while(mineGen<mineCount){
+            cellGenX = rand.nextInt(gridSize);
+            cellGenY = rand.nextInt(gridSize);
+            if(board[cellGenY][cellGenX] != 1){
+                board[cellGenY][cellGenX] = 9;
+                mineGen++;
+            }
+        }
     }
 
-   
+    void wrapPrint() {    
+        for(int yModifier= 0; yModifier<columns; yModifier++){
+            for(int xModifier = 0; xModifier<rows; xModifier++){
+                System.out.print(board [yModifier] [xModifier] + "  ");
+            }
+            System.out.println();
+        }
+    }
 
-   
+    public void actionPerformed(ActionEvent e){
+        String name = e.getActionCommand();
+        Board getInt = new Board(name);
+        System.out.println(name);
+        board[getInt.getY()][getInt.getX()] = 10;
+        wrapPrint();
+    }
+
+
 }

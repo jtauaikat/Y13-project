@@ -2,6 +2,10 @@
 comment0.target=MainLoop
 comment1.params=
 comment1.target=MainLoop()
-comment2.params=e
-comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=3
+comment2.params=
+comment2.target=void\ randBoardGen()
+comment3.params=
+comment3.target=void\ wrapPrint()
+comment4.params=e
+comment4.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=5
