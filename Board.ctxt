@@ -1,12 +1,10 @@
 #BlueJ class context
 comment0.target=Board
 comment0.text=\r\n\ by\ Joshua\ Toumu'a\ &\ Leo\ Riginelli\r\n22/05/23\r\nImplementing\ board\ class\r\n
-comment1.params=
-comment1.target=Board()
-comment2.params=name
-comment2.target=Board(java.lang.String)
+comment1.params=name
+comment1.target=Board(java.lang.String)
+comment2.params=
+comment2.target=int\ getX()
 comment3.params=
-comment3.target=int\ getX()
-comment4.params=
-comment4.target=int\ getY()
-numComments=5
+comment3.target=int\ getY()
+numComments=4

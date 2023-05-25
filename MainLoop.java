@@ -89,10 +89,13 @@ public class MainLoop extends JFrame implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
+        System.out.print('\u000c');
         String name = e.getActionCommand();
+       
         Board getInt = new Board(name);
         System.out.println(name);
         board[getInt.getY()][getInt.getX()] = 10;
+        System.out.println("X: "+getInt.getX()+ " Y: "+getInt.getY());
         wrapPrint();
     }
 

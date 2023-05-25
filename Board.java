@@ -6,23 +6,22 @@
 
 public class Board
 {
-    private int nameInt;
-    public Board(){
-        this.nameInt  = 0;
-    }
+    private int nameIntX;
+    private int nameIntY;
     public Board(String name){
-        this.nameInt = Integer.parseInt(name);
+        nameIntY = Integer.parseInt(name);
+        nameIntX = Integer.parseInt(name);
     }
-
     int getX(){
-        while(this.nameInt>=100){
-            this.nameInt-=100;
+        while(nameIntX>=100){
+            nameIntX-=100;
         }
-        return this.nameInt;
+        return nameIntX-1;
     }
-
     int getY(){
-        this.nameInt/=100;
-        return this.nameInt;
+        System.out.println("before division: "+nameIntY);
+        nameIntY/=100;
+        System.out.println("after division: "+nameIntY);
+        return nameIntY-1;
     }
 }
