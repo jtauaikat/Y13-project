@@ -75,30 +75,17 @@ public class MainLoop extends JFrame implements ActionListener{
             }
         }
 
-        for(int yMod= 0; yMod<gridSize; yMod++){
-            for(int xMod = 0; xMod<gridSize; xMod++){
-                if(board[xMod][yMod]!=9){
-                    for (int ySurroundCell= -1; ySurroundCell<= 1; ySurroundCell++)
-                    {
-                        for (int xSurroundCell= -1; xSurroundCell<= 1; xSurroundCell++)
-                        {
-                            if (yMod+ySurroundCell>=0 && yMod+ySurroundCell<gridSize && xMod+xSurroundCell>=0 && xMod+xSurroundCell<gridSize){
-                                if(board[xMod+xSurroundCell][yMod+ySurroundCell]==9){
-                                    board[xMod][yMod]++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            System.out.println();
-        }
+        
+        GameRules classObj = new GameRules();
+        classObj.arrayNeighbours(board, gridSize);
+        
+        
         
         wrapPrint();
 
     }
 
-    void wrapPrint() {    
+    public void wrapPrint() {    
         for(int yModifier= 0; yModifier<gridSize; yModifier++){
             for(int xModifier = 0; xModifier<gridSize; xModifier++){
                 System.out.print(board [xModifier] [yModifier] + "  ");

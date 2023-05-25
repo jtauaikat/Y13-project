@@ -11,27 +11,29 @@ public class GameRules
      
     }
     
-    void arrayNeighbours(int board[][], int rows, int columns){
+    void arrayNeighbours(int board[][], int gridSize){
         //  future = new int[rows][columns];
 
-        for (int y= 0; y< rows; y++)
-        {
-            for (int x= 0; x< columns; x++)
-            {
-
-                int aliveNeighbours = 0;
-                // alive neigbhours is cells which are alive near a selected cell 
-                //adds all living cells to total
-                for (int yModifier= -1; yModifier<= 1; yModifier++)
-                    for (int xModifier = -1; xModifier <= 1; xModifier++)
-                        if ((y+yModifier>=0 && y+yModifier<rows) && (x+xModifier>=0 && x+xModifier<columns)){
-
-                            aliveNeighbours += board[y+ yModifier][x+ xModifier];
+        for(int yMod= 0; yMod<gridSize; yMod++){
+            for(int xMod = 0; xMod<gridSize; xMod++){
+                if(board[xMod][yMod]!=9){
+                    for (int ySurroundCell= -1; ySurroundCell<= 1; ySurroundCell++)
+                    {
+                        for (int xSurroundCell= -1; xSurroundCell<= 1; xSurroundCell++)
+                        {
+                            if (yMod+ySurroundCell>=0 && yMod+ySurroundCell<gridSize && xMod+xSurroundCell>=0 && xMod+xSurroundCell<gridSize){
+                                if(board[xMod+xSurroundCell][yMod+ySurroundCell]==9){
+                                    board[xMod][yMod]++;
+                                }
+                            }
                         }
-                //sub self form total
-
+                    }
+                }
             }
+            System.out.println();
         }
+        
+        
     }
     
     
