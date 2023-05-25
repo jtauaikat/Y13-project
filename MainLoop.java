@@ -19,20 +19,17 @@ import java.util.concurrent.TimeUnit;
 
 public class MainLoop extends JFrame implements ActionListener{
     Random rand = new Random();
-    int columns = 10;
-    int rows = 10;
-
-    public int[][] board = new int[rows][columns];
-
     JButton gridButton; 
     int gridSize = 10;
     int buttonSize = 30;
     int mineCount = 12;
+
+    public int[][] board = new int[gridSize][gridSize];
     public MainLoop(){
         Integer buttonLabel = 0;
         int buttonYPosition = 100;
         int buttonXPosition = 100;
-        
+
         randBoardGen();
 
         for(int buttonYCount = 0; buttonYCount<gridSize; buttonYCount++){
@@ -45,7 +42,7 @@ public class MainLoop extends JFrame implements ActionListener{
                 gridButton.setBounds(buttonXPosition,buttonYPosition,buttonSize, buttonSize);
                 gridButton.setFocusable(false);
                 gridButton.addActionListener(this);
-                if(board[buttonYCount][buttonXCount] == 9){
+                if(board[buttonXCount][buttonYCount] == 9){
                     gridButton.setIcon(new ImageIcon("blueRect.png"));
                 }
 
@@ -72,17 +69,39 @@ public class MainLoop extends JFrame implements ActionListener{
         while(mineGen<mineCount){
             cellGenX = rand.nextInt(gridSize);
             cellGenY = rand.nextInt(gridSize);
-            if(board[cellGenY][cellGenX] != 1){
-                board[cellGenY][cellGenX] = 9;
+            if(board[cellGenX][cellGenY] != 1){
+                board[cellGenX][cellGenY] = 9;
                 mineGen++;
             }
         }
+
+        for(int yMod= 0; yMod<gridSize; yMod++){
+            for(int xMod = 0; xMod<gridSize; xMod++){
+                if(board[xMod][yMod]!=9){
+                    for (int ySurroundCell= -1; ySurroundCell<= 1; ySurroundCell++)
+                    {
+                        for (int xSurroundCell= -1; xSurroundCell<= 1; xSurroundCell++)
+                        {
+                            if (yMod+ySurroundCell>=0 && yMod+ySurroundCell<gridSize && xMod+xSurroundCell>=0 && xMod+xSurroundCell<gridSize){
+                                if(board[xMod+xSurroundCell][yMod+ySurroundCell]==9){
+                                    board[xMod][yMod]++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println();
+        }
+        
+        wrapPrint();
+
     }
 
     void wrapPrint() {    
-        for(int yModifier= 0; yModifier<columns; yModifier++){
-            for(int xModifier = 0; xModifier<rows; xModifier++){
-                System.out.print(board [yModifier] [xModifier] + "  ");
+        for(int yModifier= 0; yModifier<gridSize; yModifier++){
+            for(int xModifier = 0; xModifier<gridSize; xModifier++){
+                System.out.print(board [xModifier] [yModifier] + "  ");
             }
             System.out.println();
         }
@@ -91,13 +110,12 @@ public class MainLoop extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e){
         System.out.print('\u000c');
         String name = e.getActionCommand();
-       
+
         Board getInt = new Board(name);
         System.out.println(name);
-        board[getInt.getY()][getInt.getX()] = 10;
+        board[getInt.getX()][getInt.getY()] = 10;
         System.out.println("X: "+getInt.getX()+ " Y: "+getInt.getY());
         wrapPrint();
     }
-
 
 }
