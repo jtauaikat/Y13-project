@@ -24,4 +24,5 @@ public class Board
         System.out.println("after division: "+nameIntY);
         return nameIntY-1;
     }
+    
 }

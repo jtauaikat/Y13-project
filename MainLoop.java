@@ -76,9 +76,9 @@ public class MainLoop extends JFrame implements ActionListener{
         }
 
         
-        GameRules classObj = new GameRules();
-        classObj.arrayNeighbours(board, gridSize);
-        
+       // Cells classObj = new Cells();
+        //classObj.arrayNeighbours(board, gridSize);
+        Cells.arrayNeighbours(board, gridSize);
         
         
         wrapPrint();
