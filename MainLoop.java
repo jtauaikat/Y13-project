@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- *22/05/23
- *Implementing board class
+ *06/06/23
+ *Implementing object-based code
  */
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -14,11 +14,10 @@ import java.awt.event.*;
 import java.util.Scanner;
 import java.awt.Image;
 import javax.swing.JButton;   
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainLoop extends JFrame implements ActionListener{
-    Random rand = new Random();
+    
     JButton gridButton; 
     int gridSize = 10;
     int buttonSize = 30;

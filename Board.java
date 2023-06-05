@@ -1,28 +1,52 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- *22/05/23
+ *06/06/23
  *Implementing board class
  */
 
+import java.util.Random;
+
 public class Board
 {
-    private int nameIntX;
-    private int nameIntY;
-    public Board(String name){
-        nameIntY = Integer.parseInt(name);
-        nameIntX = Integer.parseInt(name);
-    }
-    int getX(){
-        while(nameIntX>=100){
-            nameIntX-=100;
-        }
-        return nameIntX-1;
-    }
-    int getY(){
-        System.out.println("before division: "+nameIntY);
-        nameIntY/=100;
-        System.out.println("after division: "+nameIntY);
-        return nameIntY-1;
+    Random rand = new Random();
+    int maxMines = 9;
+    int gridSize;
+    
+    public Cells[][] cellGrid = new Cells[gridSize][gridSize];
+
+    public Board(){
+        
     }
     
+    public Board(int gridSize){
+        Cells[][] cellGrid;
+        cellGrid = new Cells[gridSize][gridSize];
+        this.gridSize = gridSize;
+    }
+
+    void boardGen(){
+        for(int yMod= 0; yMod<gridSize; yMod++){
+            for(int xMod = 0; xMod<gridSize; xMod++){
+                cellGrid[xMod][yMod] = new Cells();
+                
+            }
+            System.out.println();
+        }
+        mineAsign();
+    }
+
+    void mineAsign(){
+        int mineGenX;
+        int mineGenY;
+        int mineGenCount = 0;
+        while(mineGenCount<maxMines){
+            mineGenX = rand.nextInt(gridSize);
+            mineGenY = rand.nextInt(gridSize);
+            if(!cellGrid[mineGenX][mineGenY].checkMine()){
+                cellGrid[mineGenX][mineGenY].setMine();
+                mineGenCount++;
+            }
+        }
+    }
+
 }
