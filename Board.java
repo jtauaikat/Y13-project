@@ -24,7 +24,7 @@ public class Board
         this.gridSize = gridSize;
     }
 
-    void boardGen(){
+    void boardFirstGen(){
         for(int yMod= 0; yMod<gridSize; yMod++){
             for(int xMod = 0; xMod<gridSize; xMod++){
                 cellGrid[xMod][yMod] = new Cells();
@@ -32,7 +32,15 @@ public class Board
             }
             System.out.println();
         }
-        mineAsign();
+    }
+    
+    void boardSecondGen(){
+        for(int yMod= 0; yMod<gridSize; yMod++){
+            for(int xMod = 0; xMod<gridSize; xMod++){
+                cellGrid[xMod][yMod].setNeighbors(xMod,yMod,cellGrid);
+            }
+            System.out.println();
+        }
     }
 
     void mineAsign(){

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class MainLoop extends JFrame implements ActionListener{
     
     JButton gridButton; 
-    int gridSize = 10;
+    static int gridSize = 10;
     int buttonSize = 30;
     int mineCount = 12;
 
@@ -59,6 +59,10 @@ public class MainLoop extends JFrame implements ActionListener{
         this.pack();
         this.toFront();  // Not too sure what this does, commenting out makes no apparent difference
         this.setVisible(true);
+    }
+    
+    public static int getGridSize(){
+        return gridSize;
     }
 
     void randBoardGen (){
