@@ -29,7 +29,7 @@ public class MainLoop extends JFrame implements ActionListener{
         int buttonYPosition = 100;
         int buttonXPosition = 100;
 
-        randBoardGen();
+        //randBoardGen();
 
         for(int buttonYCount = 0; buttonYCount<gridSize; buttonYCount++){
             buttonLabel += 100;
@@ -65,28 +65,28 @@ public class MainLoop extends JFrame implements ActionListener{
         return gridSize;
     }
 
-    void randBoardGen (){
-        int cellGenX;
-        int cellGenY;
-        int mineGen = 0;
-        while(mineGen<mineCount){
-            cellGenX = rand.nextInt(gridSize);
-            cellGenY = rand.nextInt(gridSize);
-            if(board[cellGenX][cellGenY] != 1){
-                board[cellGenX][cellGenY] = 9;
-                mineGen++;
-            }
-        }
+    // void randBoardGen (){
+        // int cellGenX;
+        // int cellGenY;
+        // int mineGen = 0;
+        // while(mineGen<mineCount){
+            // cellGenX = rand.nextInt(gridSize);
+            // cellGenY = rand.nextInt(gridSize);
+            // if(board[cellGenX][cellGenY] != 1){
+                // board[cellGenX][cellGenY] = 9;
+                // mineGen++;
+            // }
+        // }
 
         
-       // Cells classObj = new Cells();
-        //classObj.arrayNeighbours(board, gridSize);
-        Cells.arrayNeighbours(board, gridSize);
+       // // Cells classObj = new Cells();
+        // //classObj.arrayNeighbours(board, gridSize);
+        // Cells.arrayNeighbours(board, gridSize);
         
         
-        wrapPrint();
+        // wrapPrint();
 
-    }
+    // }
 
     public void wrapPrint() {    
         for(int yModifier= 0; yModifier<gridSize; yModifier++){
@@ -101,11 +101,6 @@ public class MainLoop extends JFrame implements ActionListener{
         System.out.print('\u000c');
         String name = e.getActionCommand();
 
-        Board getInt = new Board(name);
-        System.out.println(name);
-        board[getInt.getX()][getInt.getY()] = 10;
-        System.out.println("X: "+getInt.getX()+ " Y: "+getInt.getY());
-        wrapPrint();
     }
 
 }

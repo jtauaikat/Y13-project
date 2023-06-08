@@ -11,17 +11,10 @@ public class Board
     Random rand = new Random();
     int maxMines = 9;
     int gridSize;
-    
-    public Cells[][] cellGrid = new Cells[gridSize][gridSize];
-
+     public Cells[][] cellGrid;
     public Board(){
-        
-    }
-    
-    public Board(int gridSize){
-        Cells[][] cellGrid;
+         gridSize = MainLoop.getGridSize();
         cellGrid = new Cells[gridSize][gridSize];
-        this.gridSize = gridSize;
     }
 
     void boardFirstGen(){
@@ -37,7 +30,7 @@ public class Board
     void boardSecondGen(){
         for(int yMod= 0; yMod<gridSize; yMod++){
             for(int xMod = 0; xMod<gridSize; xMod++){
-                cellGrid[xMod][yMod].setNeighbors(xMod,yMod,cellGrid);
+                 cellGrid[xMod][yMod].setNeighbours(xMod, yMod, cellGrid);
             }
             System.out.println();
         }
@@ -50,7 +43,7 @@ public class Board
         while(mineGenCount<maxMines){
             mineGenX = rand.nextInt(gridSize);
             mineGenY = rand.nextInt(gridSize);
-            if(!cellGrid[mineGenX][mineGenY].checkMine()){
+            if(!cellGrid[mineGenX][mineGenY].getMine()){
                 cellGrid[mineGenX][mineGenY].setMine();
                 mineGenCount++;
             }
