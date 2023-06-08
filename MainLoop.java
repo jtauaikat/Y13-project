@@ -22,7 +22,7 @@ public class MainLoop extends JFrame implements ActionListener{
     static int gridSize = 10;
     int buttonSize = 30;
     int mineCount = 12;
-
+//defse
     public int[][] board = new int[gridSize][gridSize];
     public MainLoop(){
         Integer buttonLabel = 0;
