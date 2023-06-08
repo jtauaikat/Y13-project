@@ -13,12 +13,21 @@ public class Cells
     private boolean isFlagged;
     private boolean isMine;
     private boolean isRevealed;
+    private String name;
 //ffff
     public Cells()
     {
         isFlagged = false;
         isMine = false;
         isRevealed = false;
+    }
+    
+    public Cells(Integer cellName)
+    {
+        isFlagged = false;
+        isMine = false;
+        isRevealed = false;
+        name = cellName.toString();
     }
 
     public void getX(int forLoopX){

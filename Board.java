@@ -18,10 +18,11 @@ public class Board
     }
 
     void boardFirstGen(){
+        Integer cellName = 0;
         for(int yMod= 0; yMod<gridSize; yMod++){
             for(int xMod = 0; xMod<gridSize; xMod++){
-                cellGrid[xMod][yMod] = new Cells();
-                
+                cellName++;
+                cellGrid[xMod][yMod] = new Cells(cellName);
             }
             System.out.println();
         }

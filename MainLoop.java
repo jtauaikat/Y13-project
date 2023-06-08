@@ -22,17 +22,15 @@ public class MainLoop extends JFrame implements ActionListener{
     static int gridSize = 10;
     int buttonSize = 30;
     int mineCount = 12;
-//defse
-    public int[][] board = new int[gridSize][gridSize];
     public MainLoop(){
         Integer buttonLabel = 0;
         int buttonYPosition = 100;
         int buttonXPosition = 100;
-
-        //randBoardGen();
+        
+        
 
         for(int buttonYCount = 0; buttonYCount<gridSize; buttonYCount++){
-            buttonLabel += 100;
+            
 
             for(int buttonXCount=0; buttonXCount<gridSize; buttonXCount++){
                 buttonLabel++;
@@ -41,9 +39,7 @@ public class MainLoop extends JFrame implements ActionListener{
                 gridButton.setBounds(buttonXPosition,buttonYPosition,buttonSize, buttonSize);
                 gridButton.setFocusable(false);
                 gridButton.addActionListener(this);
-                if(board[buttonXCount][buttonYCount] == 9){
-                    gridButton.setIcon(new ImageIcon("blueRect.png"));
-                }
+                
 
                 this.add(gridButton);
                 buttonXPosition += buttonSize;
@@ -65,37 +61,14 @@ public class MainLoop extends JFrame implements ActionListener{
         return gridSize;
     }
 
-    // void randBoardGen (){
-        // int cellGenX;
-        // int cellGenY;
-        // int mineGen = 0;
-        // while(mineGen<mineCount){
-            // cellGenX = rand.nextInt(gridSize);
-            // cellGenY = rand.nextInt(gridSize);
-            // if(board[cellGenX][cellGenY] != 1){
-                // board[cellGenX][cellGenY] = 9;
-                // mineGen++;
+    // public void wrapPrint() {    
+        // for(int yModifier= 0; yModifier<gridSize; yModifier++){
+            // for(int xModifier = 0; xModifier<gridSize; xModifier++){
+                // System.out.print(board [xModifier] [yModifier] + "  ");
             // }
+            // System.out.println();
         // }
-
-        
-       // // Cells classObj = new Cells();
-        // //classObj.arrayNeighbours(board, gridSize);
-        // Cells.arrayNeighbours(board, gridSize);
-        
-        
-        // wrapPrint();
-
     // }
-
-    public void wrapPrint() {    
-        for(int yModifier= 0; yModifier<gridSize; yModifier++){
-            for(int xModifier = 0; xModifier<gridSize; xModifier++){
-                System.out.print(board [xModifier] [yModifier] + "  ");
-            }
-            System.out.println();
-        }
-    }
 
     public void actionPerformed(ActionEvent e){
         System.out.print('\u000c');
