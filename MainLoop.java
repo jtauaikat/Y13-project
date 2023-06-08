@@ -1,6 +1,6 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- *06/06/23
+ *09/06/23
  *Implementing object-based code
  */
 import javax.swing.JFrame;
@@ -22,31 +22,32 @@ public class MainLoop extends JFrame implements ActionListener{
     static int gridSize = 10;
     int buttonSize = 30;
     int mineCount = 12;
+    
+    public Board mainBoard = new Board();
     public MainLoop(){
         Integer buttonLabel = 0;
         int buttonYPosition = 100;
         int buttonXPosition = 100;
         
-        
-
         for(int buttonYCount = 0; buttonYCount<gridSize; buttonYCount++){
-            
-
             for(int buttonXCount=0; buttonXCount<gridSize; buttonXCount++){
-                buttonLabel++;
+                
                 gridButton = new JButton();
                 gridButton.setText(buttonLabel.toString());
                 gridButton.setBounds(buttonXPosition,buttonYPosition,buttonSize, buttonSize);
                 gridButton.setFocusable(false);
                 gridButton.addActionListener(this);
                 
-
+                buttonLabel++;
+                
                 this.add(gridButton);
                 buttonXPosition += buttonSize;
             }
             buttonLabel -= gridSize;
             buttonYPosition += buttonSize;
             buttonXPosition = 100;
+            
+            buttonLabel+=100;
         }
         this.getContentPane().setPreferredSize(new Dimension(1050,1050));  
         this.getContentPane().setLayout(null);
@@ -61,19 +62,14 @@ public class MainLoop extends JFrame implements ActionListener{
         return gridSize;
     }
 
-    // public void wrapPrint() {    
-        // for(int yModifier= 0; yModifier<gridSize; yModifier++){
-            // for(int xModifier = 0; xModifier<gridSize; xModifier++){
-                // System.out.print(board [xModifier] [yModifier] + "  ");
-            // }
-            // System.out.println();
-        // }
-    // }
-
     public void actionPerformed(ActionEvent e){
         System.out.print('\u000c');
         String name = e.getActionCommand();
-
+        
+        int buttonCoordX = Integer.parseInt(name)/100;
+        int buttonCoordY = Integer.parseInt(name)%100;
+        
+        mainBoard.cellGrid[buttonCoordX][buttonCoordY].stateFlagged();
     }
 
 }

@@ -1,33 +1,24 @@
-
 /**
- * Write a description of class Cells here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * by Joshua Toumu'a & Leo Riginelli
+ *09/06/23
+ *Implementing board class
  */
+
 public class Cells
 {
     private int xCoordinate;
     private int yCoordinate;
-    private int neighborCount;
+    private int neighbourCount;
     private boolean isFlagged;
     private boolean isMine;
     private boolean isRevealed;
     private String name;
-//ffff
+    
     public Cells()
     {
         isFlagged = false;
         isMine = false;
         isRevealed = false;
-    }
-    
-    public Cells(Integer cellName)
-    {
-        isFlagged = false;
-        isMine = false;
-        isRevealed = false;
-        name = cellName.toString();
     }
 
     public void getX(int forLoopX){
@@ -55,13 +46,16 @@ public class Cells
             {
                 if (yMod+ySurroundCell>=0 && yMod+ySurroundCell<MainLoop.getGridSize() && xMod+xSurroundCell>=0 && xMod+xSurroundCell<MainLoop.getGridSize() && !isFlagged){
                     if(board[xMod+xSurroundCell][yMod+ySurroundCell].getMine()){
-                        neighborCount++;
+                        neighbourCount++;
                     }
                 }
             }
         }
     }
-
+    
+    public int getNeighbours(){
+        return this.neighbourCount;
+    }
 
     public static boolean stateFlagged (){
         return false;
