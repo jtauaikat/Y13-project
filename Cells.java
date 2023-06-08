@@ -13,7 +13,7 @@ public class Cells
     private boolean isFlagged;
     private boolean isMine;
     private boolean isRevealed;
-
+//ffff
     public Cells()
     {
         isFlagged = false;

@@ -1,11 +1,11 @@
 #BlueJ package file
-dependency1.from=Cells
-dependency1.to=MainLoop
+dependency1.from=Board
+dependency1.to=Cells
 dependency1.type=UsesDependency
 dependency2.from=Board
-dependency2.to=Cells
+dependency2.to=MainLoop
 dependency2.type=UsesDependency
-dependency3.from=Board
+dependency3.from=Cells
 dependency3.to=MainLoop
 dependency3.type=UsesDependency
 editor.fx.0.height=1009
