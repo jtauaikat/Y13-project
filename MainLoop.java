@@ -1,6 +1,6 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- *09/06/23
+ *19/06/23
  *Implementing object-based code
  */
 import javax.swing.JFrame;
