@@ -21,22 +21,30 @@ public class Cells
         isRevealed = false;
     }
 
-    public void getX(int forLoopX){
-        this.xCoordinate=forLoopX;
+    public boolean getMine(){
+        return this.isMine;
     }
-
-    public void getY(int forLoopY){
-        this.yCoordinate=forLoopY;
-    }
-
     public void setMine(){
             this.isMine = true;
     }
 
-    public boolean getMine(){
-        return this.isMine;
+    public boolean getFlagged (){
+        return isFlagged;
+    }
+    public void setFlagged(boolean flagState){
+        this.isFlagged = flagState;
     }
 
+    public boolean getShown (){
+        return isRevealed;
+    }
+    public void setShown(boolean revealState){
+        this.isRevealed = revealState;
+    }
+    
+    public int getNeighbours(){
+        return this.neighbourCount;
+    }
     public void setNeighbours(int xMod, int yMod, Cells[][] board){
         //  future = new int[rows][columns];
 
@@ -53,15 +61,10 @@ public class Cells
         }
     }
     
-    public int getNeighbours(){
-        return this.neighbourCount;
+    public void getX(int forLoopX){
+        this.xCoordinate=forLoopX;
     }
-
-    public static boolean stateFlagged (){
-        return false;
-    }
-
-    public boolean stateShown (){
-        return false;
+    public void getY(int forLoopY){
+        this.yCoordinate=forLoopY;
     }
 }

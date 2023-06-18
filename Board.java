@@ -43,10 +43,14 @@ public class Board
     void testPrint(){    
         for(int yModifier= 0; yModifier<gridSize; yModifier++){
             for(int xModifier = 0; xModifier<gridSize; xModifier++){
-                if(!cellGrid[xModifier][yModifier].getMine()){
-                    System.out.print(cellGrid[xModifier][yModifier].getNeighbours()+" ");
-                }else{
+                if(cellGrid[xModifier][yModifier].getMine()){
                     System.out.print("9 ");
+                }else if (cellGrid[xModifier][yModifier].getFlagged()){
+                    System.out.print("F ");
+                }else if (cellGrid[xModifier][yModifier].getShown()){
+                    System.out.print("S ");
+                }else{
+                    System.out.print(cellGrid[xModifier][yModifier].getNeighbours()+" ");
                 }
             }
             System.out.println();

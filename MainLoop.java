@@ -66,10 +66,12 @@ public class MainLoop extends JFrame implements ActionListener{
         System.out.print('\u000c');
         String name = e.getActionCommand();
         
-        int buttonCoordX = Integer.parseInt(name)/100;
-        int buttonCoordY = Integer.parseInt(name)%100;
+        int buttonCoordX = Integer.parseInt(name)%100;
+        int buttonCoordY = Integer.parseInt(name)/100;
         
-        mainBoard.cellGrid[buttonCoordX][buttonCoordY].stateFlagged();
+        mainBoard.cellGrid[buttonCoordX][buttonCoordY].setShown(true);
+        
+        mainBoard.testPrint();
     }
 
 }
