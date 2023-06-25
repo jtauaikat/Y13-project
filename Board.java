@@ -5,6 +5,18 @@
  */
 
 import java.util.Random;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.event.*;
+import java.awt.Image;
+import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Scanner;
+import java.awt.Image;
+import javax.swing.JButton;
+import java.util.concurrent.TimeUnit;
 
 public class Board {
     Random rand = new Random();
@@ -32,6 +44,7 @@ public class Board {
         for (int yMod = 0; yMod < gridSize; yMod++) {
             for (int xMod = 0; xMod < gridSize; xMod++) {
                 cellGrid[xMod][yMod].setNeighbours(xMod, yMod, cellGrid); // Sets the neighbors for each cell in the grid
+              
             }
         }
     }
@@ -68,4 +81,5 @@ public class Board {
             }
         }
     }
+    
 }
