@@ -1,33 +1,23 @@
 
 /**
- * Write a description of class Graphics here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Joshua Toumu'a & Leo Riginelli
+ * 29/06/23
  */
+
+import java.awt.Image;
+import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 public class Graphics
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class Graphics
-     */
-    public Graphics()
-    {
-        // initialise instance variables
-        x = 0;
+    static ImageIcon icon = null;
+    public Graphics(){
+        
     }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    public static ImageIcon flagIcon(){
+        
+        return icon;
     }
 }

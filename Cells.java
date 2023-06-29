@@ -1,8 +1,8 @@
-/**
- * by Joshua Toumu'a & Leo Riginelli
- * 09/06/23
- * Implementing Cells class
- */
+import java.awt.Image;
+import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class Cells {
     private int xCoordinate;
@@ -12,11 +12,15 @@ public class Cells {
     private boolean isMine; // Indicates if the cell contains a mine
     private boolean isRevealed; // Indicates if the cell has been revealed
     private String name;
+    private ImageIcon icon;
+    private ImageIcon rollover;
 
     public Cells() {
         isFlagged = false;
         isMine = false;
         isRevealed = false;
+        icon = null;
+        rollover = null;
     }
 
     public void getX(int forLoopX) {
@@ -27,11 +31,16 @@ public class Cells {
         this.yCoordinate = forLoopY;
     }
 
+    public boolean isMine() {
+        return isMine;
+    }
+
     public void setMine() {
         this.isMine = true;
     }
-    public boolean getMine() {
-        return this.isMine;
+
+    public int getNeighbours() {
+        return this.neighbourCount;
     }
 
     public void setNeighbours(int xMod, int yMod, Cells[][] board) {
@@ -40,28 +49,41 @@ public class Cells {
             for (int xSurroundCell = -1; xSurroundCell <= 1; xSurroundCell++) {
                 if (yMod + ySurroundCell >= 0 && yMod + ySurroundCell < MainLoop.getGridSize()
                         && xMod + xSurroundCell >= 0 && xMod + xSurroundCell < MainLoop.getGridSize() && !isFlagged) {
-                    if (board[xMod + xSurroundCell][yMod + ySurroundCell].getMine()) {
+                    if (board[xMod + xSurroundCell][yMod + ySurroundCell].isMine()) {
                         neighbourCount++;
                     }
                 }
             }
         }
     }
-    public int getNeighbours(){
-        return this.neighbourCount;
-    }
-    
-        public boolean getFlagged (){
+
+    public boolean getFlagged() {
         return isFlagged;
     }
-    public void setFlagged(boolean flagState){
+
+    public void setFlagged(boolean flagState) {
         this.isFlagged = flagState;
     }
 
-    public boolean getShown (){
+    public boolean getShown() {
         return isRevealed;
     }
-    public void setShown(boolean revealState){
+
+    public void setShown(boolean revealState) {
         this.isRevealed = revealState;
+    }
+
+    public ImageIcon getIcon() {
+        return icon;
+    }
+    public void setIcon(ImageIcon iconSet) {
+        this.icon = iconSet;
+    }
+    
+    public ImageIcon getRollover(){
+        return rollover;
+    }
+    public void setRollover(ImageIcon rolloverSet){
+        this.rollover = rolloverSet;
     }
 }

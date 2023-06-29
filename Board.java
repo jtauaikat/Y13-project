@@ -1,6 +1,6 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 09/06/23
+ * 29/06/23
  * Implementing board class
  */
 
@@ -57,7 +57,7 @@ public class Board {
                     System.out.print("S ");
                 }else if (cellGrid[xModifier][yModifier].getFlagged()){
                     System.out.print("F ");
-                }else if (cellGrid[xModifier][yModifier].getMine()){
+                }else if (cellGrid[xModifier][yModifier].isMine()){
                     System.out.print("M ");
                 }else{
                     System.out.print(cellGrid[xModifier][yModifier].getNeighbours()+" ");
@@ -75,7 +75,7 @@ public class Board {
         while (mineGenCount < maxMines) {
             mineGenX = rand.nextInt(gridSize); // Generates a random X coordinate for a mine
             mineGenY = rand.nextInt(gridSize); // Generates a random Y coordinate for a mine
-            if (!cellGrid[mineGenX][mineGenY].getMine()) {
+            if (!cellGrid[mineGenX][mineGenY].isMine()) {
                 cellGrid[mineGenX][mineGenY].setMine(); // Sets the cell as containing a mine
                 mineGenCount++;
             }
