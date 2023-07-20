@@ -1,6 +1,6 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 20/07/23
+ * 21/07/23
  * Tidying & Rewriting Older Code
  */
 //some necessary imports
@@ -29,6 +29,10 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     ImageIcon mineIcon = new ImageIcon("mine.png"); // Variable to store the ImageIcon for mine cells
     ImageIcon icon;
     ImageIcon rolloverIcon;
+    
+    JMenuBar menuBar;
+    JMenu menu;
+    JMenuItem menuItem;
 
     public MainLoop() {
         setupLoop();
@@ -152,12 +156,46 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             buttonLabel += 100; //increases by 100 when moving downwards
         }
         // Setting up JFrame
+        setTitle("JoLe");
         this.getContentPane().setPreferredSize(new Dimension(1050, 1050));
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        menuSetup();
         this.pack();
         this.toFront(); // Brings the panel to front of desktop
         this.setVisible(true);
+    }
+    
+    public void menuSetup(){
+        menuBar = new JMenuBar();
+        this.setJMenuBar(menuBar);
+        
+        menu = new JMenu("Difficulty");
+        menuBar.add(menu);
+        
+        menuItem=new JMenuItem("Easy");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        
+        menuItem=new JMenuItem("Medium");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        
+        menuItem=new JMenuItem("Hard");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        
+        menu = new JMenu("Restart");
+        menu.addActionListener(this);
+        menuBar.add(menu);
+        
+        menu = new JMenu("Help");
+        menu.addActionListener(this);
+        menuBar.add(menu);
+        
+        menu = new JMenu("Quit");
+        menu.addActionListener(this);
+        menuBar.add(menu);
     }
 
     public void setImage(int buttonXCount, int buttonYCount){
