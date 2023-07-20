@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 29/06/23
- * Implementing Sprites and repaint() function
+ * 20/07/23
+ * Tidying & Rewriting Older Code
  */
 //some necessary imports
 import javax.swing.JFrame;
@@ -16,19 +16,99 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.border.Border;
 
 public class MainLoop extends JFrame implements ActionListener, MouseListener {
-    static int gridSize = 10;//creates variable for overall gridsize. allowed to change
     JButton gridButton; //defines the JButton
+    int buttonSize = 29; //constant for the visual size of the button
 
-    int buttonSize = 30; //constant for the visual size of the button
-    int mineCount = 12; // amount of mines that spawn
+    static int gridSize = 10;//creates variable for overall gridsize. allowed to change
+    int mineCount = 10; // amount of mines that spawn
+    public Board mainBoard = new Board(mineCount); //creates a board using board class and populates board upon opening program
 
-    public Board mainBoard = new Board(); //creates a board using board class and populates board upon opening program
+    boolean newGame = true;
 
     ImageIcon flagIcon = new ImageIcon("flag.png");
     ImageIcon mineIcon = new ImageIcon("mine.png"); // Variable to store the ImageIcon for mine cells
     ImageIcon icon;
     ImageIcon rolloverIcon;
+
     public MainLoop() {
+        setupLoop();
+        // Adding MouseListener to the buttons
+        for (Component component : this.getContentPane().getComponents()) {
+            if (component instanceof JButton) {
+                ((JButton) component).addMouseListener(this);
+            }
+        }
+    }
+
+    //a static variable for the board to use to reference the grid size at any time
+    public static int getGridSize() {
+        return gridSize;
+    }
+    
+    private enum ButtonType {
+        LEFT_CLICK,//shorthand name for left click
+        RIGHT_CLICK, //shorthand name for right click
+        INVALID_INPUT //accounts for invalid clicks i.e. middle mouse
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JButton button = (JButton) e.getSource();
+        String name = button.getActionCommand();
+        int buttonCoordY = Integer.parseInt(name) / 100;
+        int buttonCoordX = Integer.parseInt(name) % 100;
+        Cells cell = mainBoard.cellGrid[buttonCoordX][buttonCoordY];
+
+        ButtonType buttonType = getButtonType(e);
+        
+        if (buttonType == ButtonType.RIGHT_CLICK) {
+            handleRightClick(button, cell);
+        } else if (buttonType == ButtonType.LEFT_CLICK) {
+            handleLeftClick(button, cell);
+        }
+        mainBoard.testPrint();
+    }
+
+    private ButtonType getButtonType(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON3){
+            return ButtonType.RIGHT_CLICK;
+        }else if(e.getButton() == MouseEvent.BUTTON1){
+            return ButtonType.LEFT_CLICK;
+        }else{
+            return ButtonType.INVALID_INPUT;
+        }
+    }
+
+    private void handleRightClick(JButton button, Cells cell) {
+        if (!cell.getShown()) {
+            if (cell.getFlagged()) {
+                ImageIcon hiddenIcon = new ImageIcon("blueRect.png");
+                ImageIcon hiddenRolloverIcon = new ImageIcon("lightBlueRect.png");
+                cell.setFlagged(false);
+                setButtonIcon(button, icon, rolloverIcon);
+            } else {
+                cell.setFlagged(true);
+                button.setIcon(flagIcon);
+                button.setRolloverEnabled(false);
+            }
+        }
+    }
+
+    private void handleLeftClick(JButton button, Cells cell) {
+        if (!cell.getFlagged()) {
+            cell.setShown(true);
+            setButtonIcon(button, cell.getIcon(), cell.getRollover());
+        }
+    }
+
+    private void setButtonIcon(JButton button, ImageIcon icon, ImageIcon rolloverIcon) {
+        button.setIcon(icon);
+        button.setRolloverIcon(rolloverIcon);
+        button.setRolloverEnabled(true);
+        repaint();
+    }
+
+    public void setupLoop(){
         Integer buttonLabel = 0; //Integer type for number-based button naming system
 
         //places top left button 100px down and 100px right
@@ -52,57 +132,8 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
                 gridButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-                int mineCount = mainBoard.cellGrid[buttonXCount][buttonYCount].getNeighbours(); //returns the amount of neighbours for an integer
-                boolean isFlagged = mainBoard.cellGrid[buttonXCount][buttonYCount].getFlagged();
+                setImage(buttonXCount, buttonYCount);//runs image file
 
-                if (mainBoard.cellGrid[buttonXCount][buttonYCount].isMine()) {
-                    icon = mineIcon;
-                } else {
-                    switch (mineCount) {
-                            //each case allows for a different image to be used for each button
-                        case 0:
-                            icon = new ImageIcon("number_0.png");
-                            break;
-                        case 1:
-                            icon = new ImageIcon("number_1.png");
-                            rolloverIcon = new ImageIcon("number_1H.png");
-
-                            break;
-                        case 2:
-                            icon = new ImageIcon("number_2.png");
-                            rolloverIcon = new ImageIcon("number_2H.png");
-                            break;
-                        case 3:
-                            icon = new ImageIcon("number_3.png");
-                            rolloverIcon = new ImageIcon("number_3H.png");
-                            break;
-
-                        case 4:
-                            icon = new ImageIcon("number_4.png");
-                            rolloverIcon = new ImageIcon("number_4H.png");
-                            break;
-                        case 5:
-                            icon = new ImageIcon("number_5.png");
-                            rolloverIcon = new ImageIcon("number_5H.png");
-                            break;
-                        case 6:
-                            icon = new ImageIcon("number_6.png");
-                            rolloverIcon = new ImageIcon("number_6H.png");
-                            break;
-                        case 7:
-                            icon = new ImageIcon("number_7.png");
-                            rolloverIcon = new ImageIcon("number_7H.png");
-                            break;
-                        case 8:
-                            icon = new ImageIcon("number_8.png");
-                            rolloverIcon = new ImageIcon("number_8H.png");
-                            break;
-
-                        default:
-                            icon = new ImageIcon("mine.png");
-                            break;
-                    }   
-                }
                 //stashes the reveal icon in cell variable
                 mainBoard.cellGrid[buttonXCount][buttonYCount].setIcon(icon);
                 mainBoard.cellGrid[buttonXCount][buttonYCount].setRollover(rolloverIcon);
@@ -127,57 +158,58 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         this.pack();
         this.toFront(); // Brings the panel to front of desktop
         this.setVisible(true);
-
-        // Adding MouseListener to the buttons
-        for (Component component : this.getContentPane().getComponents()) {
-            if (component instanceof JButton) {
-                ((JButton) component).addMouseListener(this);
-            }
-        }
     }
 
-    //a static variable for the board to use to reference the grid size at any time
-    public static int getGridSize() {
-        return gridSize;
-    }
+    public void setImage(int buttonXCount, int buttonYCount){
+        int mineAmount = mainBoard.cellGrid[buttonXCount][buttonYCount].getNeighbours(); //returns the amount of neighbours for an integer
+        if (mainBoard.cellGrid[buttonXCount][buttonYCount].isMine()) {
+            icon = mineIcon;
+        } else {
+            switch (mineAmount) {
+                    //each case allows for a different image to be used for each button
+                case 0:
+                    icon = new ImageIcon("number_0.png");
+                    break;
+                case 1:
+                    icon = new ImageIcon("number_1.png");
+                    rolloverIcon = new ImageIcon("number_1H.png");
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // detects click
-        JButton button = (JButton) e.getSource(); //finds the button that is clicked upon
-        String name = button.getActionCommand(); //finds the name of the clicked button
-        int buttonCoordY = Integer.parseInt(name) / 100; //finds the X coord within the ones and tens place value of the button's name
-        int buttonCoordX = Integer.parseInt(name) % 100; //finds the Y coord within the hundreds place value of the button's name
-        ImageIcon icon;
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            //if the button click is a right click:
-            if(!mainBoard.cellGrid[buttonCoordX][buttonCoordY].getShown()){
-                //if the button is not shown already
-                if(mainBoard.cellGrid[buttonCoordX][buttonCoordY].getFlagged()){
-                    mainBoard.cellGrid[buttonCoordX][buttonCoordY].setFlagged(false); //button is flagged if unflagged
-                    icon = new ImageIcon("blueRect.png");
-                    rolloverIcon = new ImageIcon("lightBlueRect.png");
-                    button.setIcon(icon);
-                    button.setRolloverIcon(rolloverIcon);
-                    button.setRolloverEnabled(true);
-                }else{
-                    mainBoard.cellGrid[buttonCoordX][buttonCoordY].setFlagged(true); //button is unflagged if flagged
-                    button.setIcon(flagIcon);
-                    button.setRolloverEnabled(false);
-                }
-            }
+                    break;
+                case 2:
+                    icon = new ImageIcon("number_2.png");
+                    rolloverIcon = new ImageIcon("number_2H.png");
+                    break;
+                case 3:
+                    icon = new ImageIcon("number_3.png");
+                    rolloverIcon = new ImageIcon("number_3H.png");
+                    break;
 
-        }else if(e.getButton()== MouseEvent.BUTTON1){
-            // if the button click is a left click:
-            if(!mainBoard.cellGrid[buttonCoordX][buttonCoordY].getFlagged()){
-                //reveals button if not flagged
-                mainBoard.cellGrid[buttonCoordX][buttonCoordY].setShown(true);
-                button.setIcon(mainBoard.cellGrid[buttonCoordX][buttonCoordY].getIcon());
-                button.setRolloverIcon(mainBoard.cellGrid[buttonCoordX][buttonCoordY].getRollover());
-            }
+                case 4:
+                    icon = new ImageIcon("number_4.png");
+                    rolloverIcon = new ImageIcon("number_4H.png");
+                    break;
+                case 5:
+                    icon = new ImageIcon("number_5.png");
+                    rolloverIcon = new ImageIcon("number_5H.png");
+                    break;
+                case 6:
+                    icon = new ImageIcon("number_6.png");
+                    rolloverIcon = new ImageIcon("number_6H.png");
+                    break;
+                case 7:
+                    icon = new ImageIcon("number_7.png");
+                    rolloverIcon = new ImageIcon("number_7H.png");
+                    break;
+                case 8:
+                    icon = new ImageIcon("number_8.png");
+                    rolloverIcon = new ImageIcon("number_8H.png");
+                    break;
+
+                default:
+                    icon = new ImageIcon("mine.png");
+                    break;
+            }   
         }
-        mainBoard.testPrint(); //prints out board in console for testing
-        repaint();
     }
 
     @Override
@@ -189,22 +221,12 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
         if (mainBoard.cellGrid[buttonCoordX][buttonCoordY].getNeighbours() == 0 && !mainBoard.cellGrid[buttonCoordX][buttonCoordY].getShown()) {
             // Zero cell clicked, reveal neighboring cells recursively
-            revealZeroNeighbors(buttonCoordX, buttonCoordY);
-            // for (int buttonYCount = 0; buttonYCount < gridSize; buttonYCount++) {
-                // for (int buttonXCount = 0; buttonXCount < gridSize; buttonXCount++) {
-                    // if(mainBoard.cellGrid[buttonCoordX][buttonCoordY].getShown()){
-                        // button.setIcon(mainBoard.cellGrid[buttonCoordX][buttonCoordY].getIcon());
-                        // button.setRolloverIcon(mainBoard.cellGrid[buttonCoordX][buttonCoordY].getRollover());
-                        // repaint();
-                    // }
-                // }
-            // }
+            revealZeroNeighbours(buttonCoordX, buttonCoordY);
         }
-        mainBoard.testPrint();
         repaint();
     }
 
-    private void revealZeroNeighbors(int x, int y) {
+    private void revealZeroNeighbours(int x, int y) {
         if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
             // if cell is out of bounds, returns
             return;
@@ -219,33 +241,37 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
         cell.setShown(true);
 
+        JButton button = getButtonAtCoordinates(x, y);
+        button.setIcon(cell.getIcon());
+        button.setRolloverIcon(cell.getRollover());
+
         if (cell.getNeighbours() == 0) {
             // Recursively reveal neighboring cells
-            revealZeroNeighbors(x - 1, y - 1);
-            revealZeroNeighbors(x - 1, y);
-            revealZeroNeighbors(x - 1, y + 1);
-            revealZeroNeighbors(x, y - 1);
-            revealZeroNeighbors(x, y + 1);
-            revealZeroNeighbors(x + 1, y - 1);
-            revealZeroNeighbors(x + 1, y);
-            revealZeroNeighbors(x + 1, y + 1);
+            for(int revealY = y-1; revealY<y+2; revealY++){
+                for(int revealX = x-1; revealX<x+2; revealX++){
+                    revealZeroNeighbours(revealX, revealY);
+                }
+            }
         }
+    }
+
+    private JButton getButtonAtCoordinates(int x, int y) {
+        Component[] components = this.getContentPane().getComponents();
+        int buttonIndex = y * gridSize + x;
+        if (buttonIndex >= 0 && buttonIndex < components.length && components[buttonIndex] instanceof JButton) {
+            return (JButton) components[buttonIndex];
+        }
+        return null;
     }
 
     // Other methods from MouseListener interface
     @Override
     public void mousePressed(MouseEvent e) {}
-
     @Override
     public void mouseReleased(MouseEvent e) {}
-
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
+    public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
+    public void mouseExited(MouseEvent e) {}
 }
 

@@ -24,12 +24,13 @@ public class Board {
     int gridSize = MainLoop.getGridSize(); // Represents the size of the grid & retrieves the grid size from the MainLoop class
     public static Cells[][] cellGrid; // Represents the grid of cells
     
-    public Board() {
+    public Board(int mineCount) {
         cellGrid = new Cells[gridSize][gridSize]; // Initializes the cell grid
         boardFirstGen(); // Generates the initial cell grid
         mineAsign(); // Assigns mines to the cells
         boardSecondGen(); // Generates the neighbors for each cell
         testPrint(); // Prints the grid for testing purposes
+        maxMines = mineCount;
     }
     
     void boardFirstGen() {
