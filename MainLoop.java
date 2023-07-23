@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 21/07/23
- * Tidying & Rewriting Older Code
+ * 20/07/23
+ * Adding menu systems
  */
 //some necessary imports
 import javax.swing.JFrame;
@@ -15,24 +15,25 @@ import java.awt.Image;
 import java.util.concurrent.TimeUnit;
 import javax.swing.border.Border;
 
+
 public class MainLoop extends JFrame implements ActionListener, MouseListener {
     JButton gridButton; //defines the JButton
-    int buttonSize = 29; //constant for the visual size of the button
+    int buttonSize = 40; //constant for the visual size of the button
 
     static int gridSize = 10;//creates variable for overall gridsize. allowed to change
     int mineCount = 10; // amount of mines that spawn
     public Board mainBoard = new Board(mineCount); //creates a board using board class and populates board upon opening program
 
     boolean newGame = true;
+    
+    JMenuBar menuBar;
+    JMenu menu;
+    JMenuItem menuItem;
 
     ImageIcon flagIcon = new ImageIcon("flag.png");
     ImageIcon mineIcon = new ImageIcon("mine.png"); // Variable to store the ImageIcon for mine cells
     ImageIcon icon;
     ImageIcon rolloverIcon;
-    
-    JMenuBar menuBar;
-    JMenu menu;
-    JMenuItem menuItem;
 
     public MainLoop() {
         setupLoop();
@@ -70,7 +71,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         } else if (buttonType == ButtonType.LEFT_CLICK) {
             handleLeftClick(button, cell);
         }
-        mainBoard.testPrint();
+        //mainBoard.testPrint();
     }
 
     private ButtonType getButtonType(MouseEvent e) {
@@ -155,47 +156,70 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
             buttonLabel += 100; //increases by 100 when moving downwards
         }
+        JMenuBar menuBar = new JMenuBar();
+        this.setJMenuBar(menuBar);
+        
+        Menu menuHandler = new Menu();
+
+        // Difficulty menu
+        JMenu menu = new JMenu("Difficulty");
+        menuBar.add(menu);
+
+        menuItem = new JMenuItem("Easy");
+        menuItem.setActionCommand("easy"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Medium");
+        menuItem.setActionCommand("med"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Hard");
+        menuItem.setActionCommand("hard"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+
+        // Theme menu
+        menu = new JMenu("Theme");
+        menuBar.add(menu);
+
+        menuItem = new JMenuItem("Theme 1");
+        menuItem.setActionCommand("theme1"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Theme 2");
+        menuItem.setActionCommand("theme2"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+        
+        menu = new JMenu("Other");
+        menuBar.add(menu);
+        
+        menuItem = new JMenuItem("Help");
+        menuItem.setActionCommand("help"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+        
+        menuItem = new JMenuItem("Restart");
+        menuItem.setActionCommand("restart"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Quit");
+        menuItem.setActionCommand("quit"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+        
         // Setting up JFrame
         setTitle("JoLe");
         this.getContentPane().setPreferredSize(new Dimension(1050, 1050));
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        menuSetup();
         this.pack();
         this.toFront(); // Brings the panel to front of desktop
         this.setVisible(true);
-    }
-    
-    public void menuSetup(){
-        menuBar = new JMenuBar();
-        this.setJMenuBar(menuBar);
-        
-        menu = new JMenu("Difficulty");
-        menuBar.add(menu);
-        
-        menuItem=new JMenuItem("Easy");
-        menuItem.addActionListener(this);
-        menu.add(menuItem);
-        
-        menuItem=new JMenuItem("Medium");
-        menuItem.addActionListener(this);
-        menu.add(menuItem);
-        
-        menuItem=new JMenuItem("Hard");
-        menuItem.addActionListener(this);
-        menu.add(menuItem);
-        
-        menu = new JMenu("Restart");
-        menu.addActionListener(this);
-        menuBar.add(menu);
-        
-        menu = new JMenu("Help");
-        menu.addActionListener(this);
-        menuBar.add(menu);
-        
-        menu = new JMenu("Quit");
-        menu.addActionListener(this);
-        menuBar.add(menu);
     }
 
     public void setImage(int buttonXCount, int buttonYCount){

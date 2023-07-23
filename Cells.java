@@ -1,3 +1,8 @@
+/**
+ * by Joshua Toumu'a & Leo Riginelli
+ * 20/07/23
+ * Adding menu systems
+ */
 import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.*;
