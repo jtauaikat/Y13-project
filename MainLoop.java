@@ -180,6 +180,19 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         menuItem.setActionCommand("hard"); // Set the action command
         menuItem.addActionListener(menuHandler);
         menu.add(menuItem);
+        
+        menu = new JMenu("Size");
+        menuBar.add(menu);
+
+        menuItem = new JMenuItem("Small");
+        menuItem.setActionCommand("small"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Large");
+        menuItem.setActionCommand("large"); // Set the action command
+        menuItem.addActionListener(menuHandler);
+        menu.add(menuItem);
 
         // Theme menu
         menu = new JMenu("Theme");
