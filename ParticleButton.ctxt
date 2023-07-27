@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=ParticleButton
+comment1.params=text
+comment1.target=ParticleButton(java.lang.String)
+comment2.params=e
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment3.params=count
+comment3.target=void\ createParticles(int)
+comment4.params=e
+comment4.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment5.params=
+comment5.target=void\ updateParticles()
+comment6.params=g
+comment6.target=void\ paintComponent(java.awt.Graphics)
+comment7.params=args
+comment7.target=void\ main(java.lang.String[])
+comment8.params=
+comment8.target=void\ run()
+numComments=9

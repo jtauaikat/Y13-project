@@ -15,17 +15,16 @@ import java.awt.Image;
 import java.util.concurrent.TimeUnit;
 import javax.swing.border.Border;
 
-
 public class MainLoop extends JFrame implements ActionListener, MouseListener {
     JButton gridButton; //defines the JButton
-    int buttonSize = 40; //constant for the visual size of the button
+    int buttonSize = 30; //constant for the visual size of the button
 
     static int gridSize = 10;//creates variable for overall gridsize. allowed to change
     int mineCount = 10; // amount of mines that spawn
     public Board mainBoard = new Board(mineCount); //creates a board using board class and populates board upon opening program
 
     boolean newGame = true;
-    
+
     JMenuBar menuBar;
     JMenu menu;
     JMenuItem menuItem;
@@ -49,7 +48,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     public static int getGridSize() {
         return gridSize;
     }
-    
+
     private enum ButtonType {
         LEFT_CLICK,//shorthand name for left click
         RIGHT_CLICK, //shorthand name for right click
@@ -65,7 +64,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         Cells cell = mainBoard.cellGrid[buttonCoordX][buttonCoordY];
 
         ButtonType buttonType = getButtonType(e);
-        
+
         if (buttonType == ButtonType.RIGHT_CLICK) {
             handleRightClick(button, cell);
         } else if (buttonType == ButtonType.LEFT_CLICK) {
@@ -119,10 +118,10 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         //places top left button 100px down and 100px right
         int buttonYPosition = 100;
         int buttonXPosition = 100;
+        
         // Creates grid of buttons
         for (int buttonYCount = 0; buttonYCount < gridSize; buttonYCount++) {
             for (int buttonXCount = 0; buttonXCount < gridSize; buttonXCount++) {
-
                 //code to generate new JButton
                 gridButton = new JButton();
                 gridButton.setText(buttonLabel.toString()); //takes Integer and sets gridbutton name to Integer
@@ -156,9 +155,11 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
             buttonLabel += 100; //increases by 100 when moving downwards
         }
+        gridButton.setHorizontalAlignment(SwingConstants.CENTER);
+        gridButton.setVerticalAlignment(SwingConstants.CENTER);
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
-        
+
         Menu menuHandler = new Menu();
 
         // Difficulty menu
@@ -193,15 +194,15 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         menuItem.setActionCommand("theme2"); // Set the action command
         menuItem.addActionListener(menuHandler);
         menu.add(menuItem);
-        
+
         menu = new JMenu("Other");
         menuBar.add(menu);
-        
+
         menuItem = new JMenuItem("Help");
         menuItem.setActionCommand("help"); // Set the action command
         menuItem.addActionListener(menuHandler);
         menu.add(menuItem);
-        
+
         menuItem = new JMenuItem("Restart");
         menuItem.setActionCommand("restart"); // Set the action command
         menuItem.addActionListener(menuHandler);
@@ -211,7 +212,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         menuItem.setActionCommand("quit"); // Set the action command
         menuItem.addActionListener(menuHandler);
         menu.add(menuItem);
-        
+
         // Setting up JFrame
         setTitle("JoLe");
         this.getContentPane().setPreferredSize(new Dimension(1050, 1050));
@@ -230,12 +231,12 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             switch (mineAmount) {
                     //each case allows for a different image to be used for each button
                 case 0:
-                    icon = new ImageIcon("number_0.png");
+                icon = new ImageIcon("number_0.png");
+
                     break;
                 case 1:
-                    icon = new ImageIcon("number_1.png");
-                    rolloverIcon = new ImageIcon("number_1H.png");
-
+             icon = new ImageIcon("number_1.png");
+                rolloverIcon = new ImageIcon("number_1H.png");
                     break;
                 case 2:
                     icon = new ImageIcon("number_2.png");
@@ -329,10 +330,13 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     // Other methods from MouseListener interface
     @Override
     public void mousePressed(MouseEvent e) {}
+
     @Override
     public void mouseReleased(MouseEvent e) {}
+
     @Override
     public void mouseEntered(MouseEvent e) {}
+
     @Override
     public void mouseExited(MouseEvent e) {}
 }
