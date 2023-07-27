@@ -42,6 +42,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 ((JButton) component).addMouseListener(this);
             }
         }
+
     }
 
     //a static variable for the board to use to reference the grid size at any time
@@ -112,13 +113,30 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         repaint();
     }
 
+    public void restartGame() {
+        // Reset the game board
+        mainBoard = new Board(mineCount);
+
+        // Clear all cells and reset icons on buttons
+        for (Component component : this.getContentPane().getComponents()) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                button.setIcon(null);
+                button.setRolloverIcon(null);
+                button.setRolloverEnabled(false);
+            }
+        }
+        setupLoop();
+        clickFirstZeroTile();
+    }
+
     public void setupLoop(){
         Integer buttonLabel = 0; //Integer type for number-based button naming system
 
         //places top left button 100px down and 100px right
         int buttonYPosition = 100;
         int buttonXPosition = 100;
-        
+
         // Creates grid of buttons
         for (int buttonYCount = 0; buttonYCount < gridSize; buttonYCount++) {
             for (int buttonXCount = 0; buttonXCount < gridSize; buttonXCount++) {
@@ -160,7 +178,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
-        Menu menuHandler = new Menu();
+        Menu menuHandler = new Menu(this);
 
         // Difficulty menu
         JMenu menu = new JMenu("Difficulty");
@@ -180,7 +198,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         menuItem.setActionCommand("hard"); // Set the action command
         menuItem.addActionListener(menuHandler);
         menu.add(menuItem);
-        
+
         menu = new JMenu("Size");
         menuBar.add(menu);
 
@@ -235,6 +253,19 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         this.toFront(); // Brings the panel to front of desktop
         this.setVisible(true);
     }
+    private void clickFirstZeroTile() {
+        // Find the first "0" tile and programmatically trigger a left-click on it
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                if (mainBoard.cellGrid[x][y].getNeighbours() == 0) {
+                    // Found a "0" tile, trigger a left-click on it
+                    JButton button = getButtonAtCoordinates(x, y);
+                    handleLeftClick(button, mainBoard.cellGrid[x][y]);
+                    return; // Break the loop once we've clicked the first "0" tile
+                }
+            }
+        }
+    }
 
     public void setImage(int buttonXCount, int buttonYCount){
         int mineAmount = mainBoard.cellGrid[buttonXCount][buttonYCount].getNeighbours(); //returns the amount of neighbours for an integer
@@ -244,12 +275,12 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             switch (mineAmount) {
                     //each case allows for a different image to be used for each button
                 case 0:
-                icon = new ImageIcon("number_0.png");
+                    icon = new ImageIcon("number_0.png");
 
                     break;
                 case 1:
-             icon = new ImageIcon("number_1.png");
-                rolloverIcon = new ImageIcon("number_1H.png");
+                    icon = new ImageIcon("number_1.png");
+                    rolloverIcon = new ImageIcon("number_1H.png");
                     break;
                 case 2:
                     icon = new ImageIcon("number_2.png");
