@@ -25,9 +25,9 @@ public class Menu implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e){
-        System.out.println("Success!");
+        //System.out.println("Success!");
         String menuName = e.getActionCommand();
-        System.out.println(menuName);
+        //System.out.println(menuName);
         switch(menuName){
             case "easy":
                 storeGridSize = 10;
@@ -51,6 +51,7 @@ public class Menu implements ActionListener
             case "large":
                 storeButtonSize = 50;
                 mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeMineCount);
+
                 break;
             case "theme1":
 

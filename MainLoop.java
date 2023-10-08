@@ -46,14 +46,11 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
     Image setIcon;
     Image scaleIcon;
-
+     int particleAdjust = 4;
     Scanner keyboard = new Scanner(System.in);
 
     private ArrayList<Particle> particles = new ArrayList<>();
     private final int maxParticles = 50;
-
-    int originX = 0;
-    int originY = 0;
 
     public MainLoop() {
         mainBoard = new Board(mineCount, gridSize);
@@ -110,7 +107,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-                    new MainLoop();
+                new MainLoop();
             });
     }
 
@@ -242,7 +239,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         }
 
     }
-    
+
     private void handleLossCondition() {
         // Iterate through the grid to check if any mine cell is revealed
         Boolean lossState = false;
@@ -260,7 +257,9 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             }
         }
         if (lossState){
-            createParticles(getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2, originY + getButtonAtCoordinates(mineX, mineY).getY() + 2 * buttonSize, 50); // Call createParticles for the mine
+            System.out.println(getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2 + " is the xPos.");
+            System.out.println(getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2 + " is the yPos.");
+            createParticles(getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2, getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2, 50); // Call createParticles for the mine
 
             // If a mine cell is revealed, show a pop-up message indicating the loss after a delay
             if (lossTimer == null) {
@@ -287,7 +286,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     public void createParticles(int x, int y, int count) {
         for (int i = 0; i < count; i++) {
             if (particles.size() < maxParticles) {
-                int particleAdjust = 4;
+               
                 Particle particle = new Particle(x+particleAdjust, y+particleAdjust);
                 particles.add(particle);
             }
@@ -350,8 +349,8 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         Integer buttonLabel = 0; //Integer type for number-based button naming system
 
         //places top left button 100px down and 100px right
-        int buttonYPosition = originX;
-        int buttonXPosition = originY;
+        int buttonYPosition = 0;
+        int buttonXPosition = 0;
 
         // Creates grid of butt ons
         for (int buttonYCount = 0; buttonYCount < gridSize; buttonYCount++) {
@@ -387,14 +386,13 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 //resets icon to hidden cell Icon
                 icon = new ImageIcon("blueRect.png");
                 rolloverIcon = new ImageIcon("lightBlueRect.png");
-                
 
                 gridButton.setIcon(icon); //sets Icon according to switch statement
                 gridButton.setRolloverIcon(rolloverIcon);
             }
             buttonLabel -= gridSize; //returns the labels position to the beginning
             buttonYPosition += buttonSize; //moves Y Coord downwards
-            buttonXPosition = originX; //returns X Coord to origin point
+            buttonXPosition = 0; //returns X Coord to origin point
 
             buttonLabel += 100; //increases by 100 when moving downwards
         }
@@ -490,52 +488,61 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         if (mainBoard.cellGrid[buttonXCount][buttonYCount].isMine()) {
             icon = mineIcon;
         } else {
+
+            String gridSizeSuffix = "";
+            if (buttonSize == 50) {
+                gridSizeSuffix = "L";
+                 ImageIcon flagIcon = new ImageIcon("flagL.png");
+                // ImageIcon mineIcon = new ImageIcon("mineL.png");
+                 particleAdjust = 0;
+            }
             switch (mineAmount) {
                     //each case allows for a different image to be used for each button
                 case 0:
                     icon = new ImageIcon("number_0.png");
-                    
+
                     break;
                 case 1:
-                    icon = new ImageIcon("number_1.png");
-                    rolloverIcon = new ImageIcon("number_1H.png");
+                    icon = new ImageIcon("number_1" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_1H" + gridSizeSuffix + ".png");
                     break;
                 case 2:
-                    icon = new ImageIcon("number_2.png");
-                    rolloverIcon = new ImageIcon("number_2H.png");
+                    icon = new ImageIcon("number_2" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_2H" + gridSizeSuffix + ".png");
                     break;
                 case 3:
-                    icon = new ImageIcon("number_3.png");
-                    rolloverIcon = new ImageIcon("number_3H.png");
+                    icon = new ImageIcon("number_3" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_3H" + gridSizeSuffix + ".png");
                     break;
 
                 case 4:
-                    icon = new ImageIcon("number_4.png");
-                    rolloverIcon = new ImageIcon("number_4H.png");
+                    icon = new ImageIcon("number_4" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_4H" + gridSizeSuffix + ".png");
                     break;
                 case 5:
-                    icon = new ImageIcon("number_5.png");
-                    rolloverIcon = new ImageIcon("number_5H.png");
+                    icon = new ImageIcon("number_5" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_5H" + gridSizeSuffix + ".png");
                     break;
                 case 6:
-                    icon = new ImageIcon("number_6.png");
-                    rolloverIcon = new ImageIcon("number_6H.png");
+                    icon = new ImageIcon("number_6" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_6H" + gridSizeSuffix + ".png");
                     break;
                 case 7:
-                    icon = new ImageIcon("number_7.png");
-                    rolloverIcon = new ImageIcon("number_7H.png");
+                    icon = new ImageIcon("number_7" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_7H" + gridSizeSuffix + ".png");
                     break;
                 case 8:
-                    icon = new ImageIcon("number_8.png");
-                    rolloverIcon = new ImageIcon("number_8H.png");
+                    icon = new ImageIcon("number_8" + gridSizeSuffix + ".png");
+                    rolloverIcon = new ImageIcon("number_8H" + gridSizeSuffix + ".png");
                     break;
 
                 default:
-                    icon = new ImageIcon("mine.png");
+                    icon = new ImageIcon("mine" + gridSizeSuffix + ".png");
                     break;
             }  
         }
     }
+    
 
     private void revealZeroNeighbours(int x, int y) {
         if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {

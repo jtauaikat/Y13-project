@@ -1,9 +1,9 @@
 #BlueJ package file
-dependency1.from=RunGame
-dependency1.to=MainLoop
+dependency1.from=Board
+dependency1.to=Cells
 dependency1.type=UsesDependency
-dependency2.from=Board
-dependency2.to=Cells
+dependency2.from=RunGame
+dependency2.to=MainLoop
 dependency2.type=UsesDependency
 dependency3.from=Menu
 dependency3.to=MainLoop
@@ -30,8 +30,8 @@ package.divider.horizontal=0.6
 package.divider.vertical=0.6331058020477816
 package.editor.height=364
 package.editor.width=759
-package.editor.x=649
-package.editor.y=165
+package.editor.x=121
+package.editor.y=247
 package.frame.height=686
 package.frame.width=889
 package.numDependencies=7

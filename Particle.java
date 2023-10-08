@@ -14,14 +14,13 @@ public class Particle {
     public Particle(int x, int y) {
         this.x = x;
         this.y = y;
-        System.out.println("hello");
 
         Random rand = new Random();
         this.vx = rand.nextInt(5) - 2;
         this.vy = rand.nextInt(5) - 2;
         this.size = rand.nextInt(5) + 2;
-                        System.out.println(x);
-                        System.out.println(y);
+        //System.out.println(x);
+        //System.out.println(y);
 
         this.color = new Color(200,0,0);
         this.lifespan = 10 + rand.nextInt(20);
