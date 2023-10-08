@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=Board
-comment1.params=mineCount
-comment1.target=Board(int)
+comment1.params=mineCount\ importGridSize
+comment1.target=Board(int,\ int)
 comment2.params=
 comment2.target=void\ boardFirstGen()
 comment3.params=

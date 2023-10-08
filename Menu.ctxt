@@ -1,7 +1,9 @@
 #BlueJ class context
 comment0.target=Menu
-comment1.params=mainLoop
-comment1.target=Menu(MainLoop)
+comment1.params=mainLoop\ setGrid\ setButton\ setMine
+comment1.target=Menu(MainLoop,\ int,\ int,\ int)
 comment2.params=e
 comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=3
+comment3.params=
+comment3.target=void\ dialogBox()
+numComments=4

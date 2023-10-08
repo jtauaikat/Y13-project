@@ -13,14 +13,16 @@ public class Cells {
     private int xCoordinate;
     private int yCoordinate;
     private int neighbourCount; // Stores the number of neighboring cells with mines
+    private int gridSize;
     private boolean isFlagged; // Indicates if the cell is flagged
     private boolean isMine; // Indicates if the cell contains a mine
     private boolean isRevealed; // Indicates if the cell has been revealed
     private String name;
     private ImageIcon icon;
     private ImageIcon rollover;
-
-    public Cells() {
+     
+    public Cells(int importGridSize) {
+        gridSize = importGridSize;
         isFlagged = false;
         isMine = false;
         isRevealed = false;
@@ -52,8 +54,8 @@ public class Cells {
         // Calculates the number of neighboring cells with mines
         for (int ySurroundCell = -1; ySurroundCell <= 1; ySurroundCell++) {
             for (int xSurroundCell = -1; xSurroundCell <= 1; xSurroundCell++) {
-                if (yMod + ySurroundCell >= 0 && yMod + ySurroundCell < MainLoop.getGridSize()
-                        && xMod + xSurroundCell >= 0 && xMod + xSurroundCell < MainLoop.getGridSize() && !isFlagged) {
+                if (yMod + ySurroundCell >= 0 && yMod + ySurroundCell < gridSize
+                        && xMod + xSurroundCell >= 0 && xMod + xSurroundCell < gridSize && !isFlagged) {
                     if (board[xMod + xSurroundCell][yMod + ySurroundCell].isMine()) {
                         neighbourCount++;
                     }
@@ -81,6 +83,7 @@ public class Cells {
     public ImageIcon getIcon() {
         return icon;
     }
+    
     public void setIcon(ImageIcon iconSet) {
         this.icon = iconSet;
     }
@@ -91,4 +94,5 @@ public class Cells {
     public void setRollover(ImageIcon rolloverSet){
         this.rollover = rolloverSet;
     }
+  
 }

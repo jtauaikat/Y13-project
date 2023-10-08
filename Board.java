@@ -21,10 +21,12 @@ import java.util.concurrent.TimeUnit;
 public class Board {
     Random rand = new Random();
     int maxMines = 9; // Represents the maximum number of mines
-    int gridSize = MainLoop.getGridSize(); // Represents the size of the grid & retrieves the grid size from the MainLoop class
-    public static Cells[][] cellGrid; // Represents the grid of cells
+    int gridSize; // Represents the size of the grid & retrieves the grid size from the MainLoop class
+    public Cells[][] cellGrid; // Represents the grid of cells
     
-    public Board(int mineCount) {
+    public Board(int mineCount, int importGridSize) {
+        gridSize = importGridSize;
+        maxMines = mineCount;
         cellGrid = new Cells[gridSize][gridSize]; // Initializes the cell grid
         boardFirstGen(); // Generates the initial cell grid
         mineAsign(); // Assigns mines to the cells
@@ -36,7 +38,7 @@ public class Board {
     void boardFirstGen() {
         for (int yMod = 0; yMod < gridSize; yMod++) {
             for (int xMod = 0; xMod < gridSize; xMod++) {
-                cellGrid[xMod][yMod] = new Cells(); // Creates a new cell and adds it to the grid
+                cellGrid[xMod][yMod] = new Cells(gridSize); // Creates a new cell and adds it to the grid
             }
         }
     }
@@ -45,13 +47,12 @@ public class Board {
         for (int yMod = 0; yMod < gridSize; yMod++) {
             for (int xMod = 0; xMod < gridSize; xMod++) {
                 cellGrid[xMod][yMod].setNeighbours(xMod, yMod, cellGrid); // Sets the neighbors for each cell in the grid
-              
             }
         }
     }
     
     void testPrint() {
-        System.out.println('\u000c');
+        //System.out.println('\u000c');
         for (int yModifier = 0; yModifier < gridSize; yModifier++) {
             for (int xModifier = 0; xModifier < gridSize; xModifier++) {
                 if(cellGrid[xModifier][yModifier].getShown()){
