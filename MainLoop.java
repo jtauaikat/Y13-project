@@ -1,17 +1,17 @@
+
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 03/10/23
- * Tidying Code + Implementation of final menu and particles
+ * 09/10/23
+ * commenting overveiw
  */
-//some necessary imports
+
+// Import necessary classes and packages
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.*;
 import java.util.Scanner;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
-import java.awt.Image;
 import java.util.concurrent.TimeUnit;
 import javax.swing.border.Border;
 import javax.swing.Timer;
@@ -24,36 +24,40 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+// Main class definition, extends JFrame and implements ActionListener and MouseListener interfaces
 public class MainLoop extends JFrame implements ActionListener, MouseListener {
-    JButton gridButton; //defines the JButton
-    int buttonSize = 30; //constant for the visual size of the button
+    JButton gridButton; 
+    int buttonSize = 30; // Constant for the visual size of the button
 
-    int gridSize = 10;//creates variable for overall gridsize. allowed to change
-    int mineCount = 9; // amount of mines that spawn
-    public Board mainBoard; //creates a board using board class and populates board upon opening program
+    int gridSize = 10; // Create a variable for the overall grid size (can be changed)
+    int mineCount = 9; // Define the number of mines that spawn
+    public Board mainBoard; // Create a board using the Board class and populate it upon opening the program
 
-    boolean newGame = true;
-
-    JMenuBar menuBar;
+    JMenuBar menuBar; // Menu & timer variable imports
     JMenu menu;
     JMenuItem menuItem;
     private Timer timer;
     private Timer lossTimer;
-    ImageIcon flagIcon = new ImageIcon("flag.png");
-    ImageIcon mineIcon = new ImageIcon("mine.png"); // Variable to store the ImageIcon for mine cells
+    ImageIcon flagIcon = new ImageIcon("flag.png"); // ImageIcon for flag cells
+    ImageIcon mineIcon = new ImageIcon("mine.png"); // ImageIcon for mine cells
     ImageIcon icon;
     ImageIcon rolloverIcon;
 
     Image setIcon;
     Image scaleIcon;
-     int particleAdjust = 4;
+    int particleAdjust = 4; // Particle adjustment for X-coordinate
+    int particleAdjustY = 4; // Particle adjustment for Y-coordinate
     Scanner keyboard = new Scanner(System.in);
 
+    // ArrayList to store particles
     private ArrayList<Particle> particles = new ArrayList<>();
-    private final int maxParticles = 50;
+    private final int maxParticles = 50; // Maximum number of particles
 
+    // Constructor for the MainLoop class
     public MainLoop() {
+        // Create a new Board with mineCount and gridSize
         mainBoard = new Board(mineCount, gridSize);
+        // Initialize the game loop
         setupLoop();
         // Adding MouseListener to the buttons
         for (Component component : this.getContentPane().getComponents()) {
@@ -61,16 +65,19 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 ((JButton) component).addMouseListener(this);
             }
         }
+        // Automatically click the first tile with zero neighbors
         clickFirstZeroTile();
-
     }
 
+    // Overloaded constructor with custom buttonSize, gridSize, and mineCount
     public MainLoop(int newButtonSize, int newGridSize, int newMineCount) {
         buttonSize = newButtonSize;
         gridSize = newGridSize;
         mineCount = newMineCount;
 
+        // Create a new Board with the specified mineCount and gridSize
         mainBoard = new Board(mineCount, gridSize);
+        // Initialize the game loop
         setupLoop();
         // Adding MouseListener to the buttons
         for (Component component : this.getContentPane().getComponents()) {
@@ -78,46 +85,49 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 ((JButton) component).addMouseListener(this);
             }
         }
+        // Automatically click the first tile with zero neighbors
         clickFirstZeroTile();
-
     }
 
-    /** set variables */
-
+    // Enum to represent different button types (LEFT_CLICK, RIGHT_CLICK, INVALID_INPUT)
     private enum ButtonType {
-        LEFT_CLICK,//shorthand name for left click
-        RIGHT_CLICK, //shorthand name for right click
-        INVALID_INPUT //accounts for invalid clicks i.e. middle mouse
+        LEFT_CLICK,      // Shorthand name for left click
+        RIGHT_CLICK,     // Shorthand name for right click
+        INVALID_INPUT    // Accounts for invalid clicks (e.g., middle mouse)
     }
 
+    // Determine the button type (LEFT_CLICK, RIGHT_CLICK, INVALID_INPUT) based on MouseEvent
     private ButtonType getButtonType(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON3){
+        if (e.getButton() == MouseEvent.BUTTON3) {
             return ButtonType.RIGHT_CLICK;
-        }else if(e.getButton() == MouseEvent.BUTTON1){
+        } else if (e.getButton() == MouseEvent.BUTTON1) {
             return ButtonType.LEFT_CLICK;
-        }else{
+        } else {
             return ButtonType.INVALID_INPUT;
         }
     }
 
+    // Override the paint method to draw particles
     public void paint(Graphics g) {
         super.paint(g);
         drawParticles(g);
     }
 
+    // Main method to start the application
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
                 new MainLoop();
             });
     }
 
+    // Set the icon and rollover icon for a JButton
     private void setButtonIcon(JButton button, ImageIcon icon, ImageIcon rolloverIcon) {
         button.setIcon(icon);
         button.setRolloverIcon(rolloverIcon);
-
         repaint();
     }
 
+    // Get the JButton at specified coordinates (x, y) in the grid
     private JButton getButtonAtCoordinates(int x, int y) {
         Component[] components = this.getContentPane().getComponents();
         int buttonIndex = y * gridSize + x;
@@ -128,7 +138,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     }
 
     /** mouse click methods */
-
+    // Handle mouse click events
     @Override
     public void mouseClicked(MouseEvent e) {
         JButton button = (JButton) e.getSource();
@@ -139,16 +149,17 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
         ButtonType buttonType = getButtonType(e);
 
+        // Handle right-click
         if (buttonType == ButtonType.RIGHT_CLICK) {
             handleRightClick(button, cell);
-        } else if (buttonType == ButtonType.LEFT_CLICK) {
+        }
+        // Handle left-click
+        else if (buttonType == ButtonType.LEFT_CLICK) {
             handleLeftClick(button, cell);
-            //System.out.println(buttonCoordX);
-            //System.out.println(buttonCoordY);
-            //createParticles(button.getX() + buttonSize / 2, originY + button.getY()+2*buttonSize, 10);
         }
     }
 
+    // Handle right-click event
     private void handleRightClick(JButton button, Cells cell) {
         ImageIcon hiddenIcon = new ImageIcon("blueRect.png");
         ImageIcon hiddenRolloverIcon = new ImageIcon("lightBlueRect.png");
@@ -163,41 +174,33 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         }
     }
 
+    // Handle left-click event
     private void handleLeftClick(JButton button, Cells cell) {
         if (!cell.getFlagged()) {
             cell.setShown(true);
             setButtonIcon(button, cell.getIcon(), cell.getRollover());
             handleLossCondition(); // Check for the loss condition after revealing the cell
             checkWinCondition(); // Check for the win condition after revealing the cell
-            // if(cell.getNeighbours() == 0){
-            //    revealZeroNeighbours(button.getX(), button.getY());
-            // }
-            //f (mainBoard.cellGrid[button.getX()][button.getY()].getNeighbours() == 0) {
-            // Found a "0" tile, trigger a left-click on it
-
-            //handleLeftClick(button, mainBoard.cellGrid[x][y]);
-            //  revealZeroNeighbours(button.getX(), button.getY());
-
-            // Break the loop once we've clicked the first "0" tile
-            // }
         }
     }
 
+    // ActionListener for button clicks
     public void actionPerformed(ActionEvent e) {
-        //.out.println("actionPerformed");
         JButton button = (JButton) e.getSource();
         String name = button.getActionCommand();
         int buttonCoordY = Integer.parseInt(name) / 100;
         int buttonCoordX = Integer.parseInt(name) % 100;
 
-        if (mainBoard.cellGrid[buttonCoordX][buttonCoordY].getNeighbours() == 0 && !mainBoard.cellGrid[buttonCoordX][buttonCoordY].getShown()) {
+        // Check if the clicked cell has no neighboring mines (value is 0)
+        if (mainBoard.cellGrid[buttonCoordX][buttonCoordY].getNeighbours() == 0 && 
+        !mainBoard.cellGrid[buttonCoordX][buttonCoordY].getShown()) {
             // Zero cell clicked, reveal neighboring cells recursively
             revealZeroNeighbours(buttonCoordX, buttonCoordY);
         }
         repaint();
     }
 
-    // Other methods from MouseListener interface
+    // Other methods from the MouseListener interface
     @Override
     public void mousePressed(MouseEvent e) {}
 
@@ -211,17 +214,19 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent e) {}
 
     /** win/loss handling */
-
+    // Restart the game by disposing of the current instance and creating a new one
     public void restartGame() {
         this.dispose();
         MainLoop gameReset = new MainLoop();
     }
 
+    // Restart the game with custom settings from the menu
     public void restartGameInMenu(int passSize, int passGrid, int passMineCount) {
         this.dispose();
         MainLoop gameReset = new MainLoop(passSize, passGrid, passMineCount);
     }
 
+    // Check if the win condition is met
     private void checkWinCondition() {
         int mineTally = 0;
         for (int y = 0; y < gridSize; y++) {
@@ -235,14 +240,14 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         if (mineTally == mineCount) {
             // If all non-mine cells are revealed, show a pop-up message indicating the win
             JOptionPane.showMessageDialog(this, "Congratulations! You've won!");
-            restartGame(); 
+            restartGame(); // Restart the game after winning
         }
-
     }
 
+    // Handle the loss condition when a mine is hit
     private void handleLossCondition() {
         // Iterate through the grid to check if any mine cell is revealed
-        Boolean lossState = false;
+        boolean lossState = false;
         int mineY = 0;
         int mineX = 0;
         for (int y = 0; y < gridSize; y++) {
@@ -256,10 +261,12 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 }
             }
         }
-        if (lossState){
-            System.out.println(getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2 + " is the xPos.");
-            System.out.println(getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2 + " is the yPos.");
-            createParticles(getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2, getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2, 50); // Call createParticles for the mine
+        if (lossState) {
+            int xPos = getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2;
+            int yPos = getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2;
+
+            // Create particles at the mine position
+            createParticles(xPos, yPos, 50);
 
             // If a mine cell is revealed, show a pop-up message indicating the loss after a delay
             if (lossTimer == null) {
@@ -277,17 +284,15 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 // If the timer is not running (e.g., if a mine is hit again after restarting), start it again
                 lossTimer.start();
             }
-            return;
         }
     }
 
     /** particle methods */
-
+    // Create and manage particle effects
     public void createParticles(int x, int y, int count) {
         for (int i = 0; i < count; i++) {
             if (particles.size() < maxParticles) {
-               
-                Particle particle = new Particle(x+particleAdjust, y+particleAdjust);
+                Particle particle = new Particle(x + particleAdjust, y + particleAdjustY);
                 particles.add(particle);
             }
         }
@@ -309,12 +314,14 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         }
     }
 
+    // Draw particles on the screen
     private void drawParticles(Graphics g) {
         for (Particle particle : particles) {
             particle.draw(g);
         }
     }
 
+    // Update the state of particles
     private void updateParticles() {
         Iterator<Particle> iterator = particles.iterator();
         while (iterator.hasNext()) {
@@ -326,75 +333,61 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         }
     }
 
-    /**start methods */
-
+    // Programmatically trigger a left-click on the first "0" tile
     private void clickFirstZeroTile() {
-        // Find the first "0" tile and programmatically trigger a left-click on it
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
                 if (mainBoard.cellGrid[x][y].getNeighbours() == 0) {
-                    // Found a "0" tile, trigger a left-click on it
                     JButton button = getButtonAtCoordinates(x, y);
-                    //handleLeftClick(button, mainBoard.cellGrid[x][y]);
                     revealZeroNeighbours(x, y);
                     setImage(x, y); // Set the icon and rolloverIcon for the clicked cell
-
                     return; // Break the loop once we've clicked the first "0" tile
                 }
             }
         }
     }
 
-    public void setupLoop(){
-        Integer buttonLabel = 0; //Integer type for number-based button naming system
+    // Set up the main game loop
+    public void setupLoop() {
+        Integer buttonLabel = 0; // Integer type for number-based button naming system
 
-        //places top left button 100px down and 100px right
+        // Places top-left button 100px down and 100px right
         int buttonYPosition = 0;
         int buttonXPosition = 0;
 
-        // Creates grid of butt ons
+        // Creates a grid of buttons
         for (int buttonYCount = 0; buttonYCount < gridSize; buttonYCount++) {
             for (int buttonXCount = 0; buttonXCount < gridSize; buttonXCount++) {
-                //code to generate new JButton
-                gridButton = new JButton(""+buttonLabel);
-                //gridButton.setText(buttonLabel.toString()); //takes Integer and sets gridbutton name to Integer
+                // Code to generate a new JButton
+                gridButton = new JButton("" + buttonLabel);
+                // gridButton.setText(buttonLabel.toString()); // Takes Integer and sets gridbutton name to Integer
                 gridButton.setFont(new Font("Dialog", Font.PLAIN, 0));
-                gridButton.setBounds(buttonXPosition, buttonYPosition, buttonSize, buttonSize);//sets button size and position
+                gridButton.setBounds(buttonXPosition, buttonYPosition, buttonSize, buttonSize); // Sets button size and position
                 gridButton.setFocusable(false);
                 gridButton.addActionListener(this);
-                buttonLabel++; //increases by 1 when moving to the left
+                buttonLabel++; // Increases by 1 when moving to the left
 
-                this.add(gridButton); //draws button
-                buttonXPosition += buttonSize; //moves X Coord to the right
+                this.add(gridButton); // Draws button
+                buttonXPosition += buttonSize; // Moves X Coord to the right
 
                 gridButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-                setImage(buttonXCount, buttonYCount);//runs image file
+                setImage(buttonXCount, buttonYCount); // Runs the image file
 
-                // Image scaleIconImg = icon.getImage();
-                // Image newIconScaled = scaleIconImg.getScaledInstance(buttonSize, buttonSize, java.awt.Image.SCALE_SMOOTH);
-                // icon = new ImageIcon(newIconScaled);
-
-                // Image scaleRolloverImg = rolloverIcon.getImage();
-                // Image newRolloverScaled = scaleRolloverImg.getScaledInstance(buttonSize, buttonSize, java.awt.Image.SCALE_SMOOTH);
-                // rolloverIcon = new ImageIcon(newRolloverScaled);
-
-                //stashes the reveal icon in cell variable
                 mainBoard.cellGrid[buttonXCount][buttonYCount].setIcon(icon);
                 mainBoard.cellGrid[buttonXCount][buttonYCount].setRollover(rolloverIcon);
 
-                //resets icon to hidden cell Icon
-                icon = new ImageIcon("blueRect.png");
+                icon = new ImageIcon("blueRect.png"); // Resets icon to hidden cell Icon
                 rolloverIcon = new ImageIcon("lightBlueRect.png");
 
-                gridButton.setIcon(icon); //sets Icon according to switch statement
+                gridButton.setIcon(icon); // Sets Icon according to switch statement
                 gridButton.setRolloverIcon(rolloverIcon);
             }
-            buttonLabel -= gridSize; //returns the labels position to the beginning
-            buttonYPosition += buttonSize; //moves Y Coord downwards
-            buttonXPosition = 0; //returns X Coord to origin point
+            buttonLabel -= gridSize; // Returns the labels position to the beginning
+            buttonYPosition += buttonSize; // Moves Y Coord downwards
+            buttonXPosition = 0; // Returns X Coord to the origin point
 
-            buttonLabel += 100; //increases by 100 when moving downwards
+            buttonLabel += 100; // Increases by 100 when moving downwards
         }
         Menu menuClassHandler = new Menu(this, gridSize, buttonSize, mineCount);
 
@@ -402,16 +395,21 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
         // Setting up JFrame
         setTitle("JoLe");
-        this.getContentPane().setPreferredSize(new Dimension(gridSize*buttonSize, gridSize*buttonSize));
+        this.getContentPane().setPreferredSize(new Dimension(gridSize * buttonSize, gridSize * buttonSize));
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
-        this.toFront(); // Brings the panel to front of desktop
+        this.toFront(); // Brings the panel to the front of the desktop
         this.setVisible(true);
     }
 
-    void menuSetup(Menu menuClassHandler){
+    /**
+     * Sets up the game's menu with difficulty, size, theme, and other options.
+     * 
+     * @param menuClassHandler An instance of the Menu class to handle menu actions.
+     */
+    void menuSetup(Menu menuClassHandler) {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
@@ -419,6 +417,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         JMenu menu = new JMenu("Difficulty");
         menuBar.add(menu);
 
+        // Add menu items for different difficulty levels
         menuItem = new JMenuItem("Easy");
         menuItem.setActionCommand("easy"); // Set the action command
         menuItem.addActionListener(menuClassHandler);
@@ -434,9 +433,11 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         menuItem.addActionListener(menuClassHandler);
         menu.add(menuItem);
 
+        // Size menu
         menu = new JMenu("Size");
         menuBar.add(menu);
 
+        // Add menu items for different board sizes
         menuItem = new JMenuItem("Small");
         menuItem.setActionCommand("small"); // Set the action command
         menuItem.addActionListener(menuClassHandler);
@@ -447,23 +448,11 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         menuItem.addActionListener(menuClassHandler);
         menu.add(menuItem);
 
-        // Theme menu
-        menu = new JMenu("Theme");
-        menuBar.add(menu);
-
-        menuItem = new JMenuItem("Theme 1");
-        menuItem.setActionCommand("theme1"); // Set the action command
-        menuItem.addActionListener(menuClassHandler);
-        menu.add(menuItem);
-
-        menuItem = new JMenuItem("Theme 2");
-        menuItem.setActionCommand("theme2"); // Set the action command
-        menuItem.addActionListener(menuClassHandler);
-        menu.add(menuItem);
-
+        // Other menu
         menu = new JMenu("Other");
         menuBar.add(menu);
 
+        // Add menu items for help, restart, and quit
         menuItem = new JMenuItem("Help");
         menuItem.setActionCommand("help"); // Set the action command
         menuItem.setAccelerator(KeyStroke.getKeyStroke(('h')));
@@ -492,9 +481,10 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             String gridSizeSuffix = "";
             if (buttonSize == 50) {
                 gridSizeSuffix = "L";
-                 ImageIcon flagIcon = new ImageIcon("flagL.png");
-                // ImageIcon mineIcon = new ImageIcon("mineL.png");
-                 particleAdjust = 0;
+                flagIcon = new ImageIcon("flagL.png");
+                mineIcon = new ImageIcon("mineL.png");
+                particleAdjustY = -20;
+
             }
             switch (mineAmount) {
                     //each case allows for a different image to be used for each button
@@ -542,9 +532,8 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             }  
         }
     }
-    
 
-    private void revealZeroNeighbours(int x, int y) {
+  private void revealZeroNeighbours(int x, int y) {
         if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
             // If cell is out of bounds, return
             return;
@@ -574,5 +563,6 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             }
         }
     }
+
 }
 

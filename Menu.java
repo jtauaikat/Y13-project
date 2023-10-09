@@ -18,9 +18,9 @@ public class Menu implements ActionListener
 
     public Menu(MainLoop mainLoop, int setGrid, int setButton, int setMine) {
         this.mainLoop = mainLoop;
-        int storeMineCount = setMine;
-        int storeGridSize = setGrid;
-        int storeButtonSize = setButton;
+        storeMineCount = setMine;
+        storeGridSize = setGrid;
+        storeButtonSize = setButton;
     }
 
     @Override
@@ -35,13 +35,13 @@ public class Menu implements ActionListener
                 mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeMineCount);
                 break;
             case "med":
-                storeGridSize = 20;
-                storeMineCount = 20;
+                storeGridSize = 15;
+                storeMineCount = 30;
                 mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeMineCount);
                 break;
             case "hard":
-                storeGridSize = 30;
-                storeMineCount = 30;
+                storeGridSize = 20;
+                storeMineCount = 40;
                 mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeMineCount);
                 break;
             case "small":
@@ -51,13 +51,6 @@ public class Menu implements ActionListener
             case "large":
                 storeButtonSize = 50;
                 mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeMineCount);
-
-                break;
-            case "theme1":
-
-                break;
-            case "theme2":
-
                 break;
             case "help":
                 dialogBox();
