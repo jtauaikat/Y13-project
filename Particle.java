@@ -1,3 +1,9 @@
+/**
+ * by Joshua Toumu'a & Leo Riginelli
+ * 12/10/23
+ * Commenting
+ */
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;

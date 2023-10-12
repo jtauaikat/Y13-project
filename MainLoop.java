@@ -1,8 +1,7 @@
-
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 09/10/23
- * commenting overveiw
+ * 12/10/23
+ * Commenting
  */
 
 // Import necessary classes and packages
@@ -27,7 +26,7 @@ import java.util.Iterator;
 // Main class definition, extends JFrame and implements ActionListener and MouseListener interfaces
 public class MainLoop extends JFrame implements ActionListener, MouseListener {
     JButton gridButton; 
-    int buttonSize = 30; // Constant for the visual size of the button
+    int buttonSize = 30; // variable for the visual size of the button (can be changed)
 
     int gridSize = 10; // Create a variable for the overall grid size (can be changed)
     int mineCount = 9; // Define the number of mines that spawn
@@ -71,6 +70,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
     // Overloaded constructor with custom buttonSize, gridSize, and mineCount
     public MainLoop(int newButtonSize, int newGridSize, int newMineCount) {
+        //imports new settings, changes settings
         buttonSize = newButtonSize;
         gridSize = newGridSize;
         mineCount = newMineCount;
@@ -141,19 +141,19 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     // Handle mouse click events
     @Override
     public void mouseClicked(MouseEvent e) {
-        JButton button = (JButton) e.getSource();
-        String name = button.getActionCommand();
-        int buttonCoordY = Integer.parseInt(name) / 100;
-        int buttonCoordX = Integer.parseInt(name) % 100;
-        Cells cell = mainBoard.cellGrid[buttonCoordX][buttonCoordY];
+        JButton button = (JButton) e.getSource(); //gets button
+        String name = button.getActionCommand(); //gets name of button
+        int buttonCoordY = Integer.parseInt(name) / 100; //finds X coord by dividing button name by 100
+        int buttonCoordX = Integer.parseInt(name) % 100; //finds Y coord by finding the remainder of name
+        Cells cell = mainBoard.cellGrid[buttonCoordX][buttonCoordY]; //finds cell in cellgrid by these coordinates
 
-        ButtonType buttonType = getButtonType(e);
+        ButtonType buttonType = getButtonType(e); //returns click type
 
-        // Handle right-click
+        // Handles right-click
         if (buttonType == ButtonType.RIGHT_CLICK) {
             handleRightClick(button, cell);
         }
-        // Handle left-click
+        // Handles left-click
         else if (buttonType == ButtonType.LEFT_CLICK) {
             handleLeftClick(button, cell);
         }
@@ -163,6 +163,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     private void handleRightClick(JButton button, Cells cell) {
         ImageIcon hiddenIcon = new ImageIcon("blueRect.png");
         ImageIcon hiddenRolloverIcon = new ImageIcon("lightBlueRect.png");
+        //sets hidden icons, allows flag toggle for unrevealed cells
         if (!cell.getShown()) {
             if (cell.getFlagged()) {
                 cell.setFlagged(false);
@@ -176,9 +177,10 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
     // Handle left-click event
     private void handleLeftClick(JButton button, Cells cell) {
-        if (!cell.getFlagged()) {
+        //if the cell isn't flagged
+        if (!cell.getFlagged()) { 
             cell.setShown(true);
-            setButtonIcon(button, cell.getIcon(), cell.getRollover());
+            setButtonIcon(button, cell.getIcon(), cell.getRollover()); //sets button icon to stored icon in Cells class
             handleLossCondition(); // Check for the loss condition after revealing the cell
             checkWinCondition(); // Check for the win condition after revealing the cell
         }
@@ -186,10 +188,10 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
     // ActionListener for button clicks
     public void actionPerformed(ActionEvent e) {
-        JButton button = (JButton) e.getSource();
-        String name = button.getActionCommand();
-        int buttonCoordY = Integer.parseInt(name) / 100;
-        int buttonCoordX = Integer.parseInt(name) % 100;
+        JButton button = (JButton) e.getSource(); //gets button
+        String name = button.getActionCommand(); //gets name of button
+        int buttonCoordY = Integer.parseInt(name) / 100; //finds X coord by dividing button name by 100
+        int buttonCoordX = Integer.parseInt(name) % 100; //finds Y coord by finding the remainder of name
 
         // Check if the clicked cell has no neighboring mines (value is 0)
         if (mainBoard.cellGrid[buttonCoordX][buttonCoordY].getNeighbours() == 0 && 
@@ -200,7 +202,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         repaint();
     }
 
-    // Other methods from the MouseListener interface
+    // Other unused methods from the MouseListener interface
     @Override
     public void mousePressed(MouseEvent e) {}
 
@@ -237,6 +239,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 }
             }
         }
+        //counts all unrevealed cells
         if (mineTally == mineCount) {
             // If all non-mine cells are revealed, show a pop-up message indicating the win
             JOptionPane.showMessageDialog(this, "Congratulations! You've won!");
@@ -261,6 +264,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 }
             }
         }
+        //if player loses, create particles on button
         if (lossState) {
             int xPos = getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2;
             int yPos = getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2;
@@ -333,10 +337,12 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         }
     }
 
+    /** setup methods */
     // Programmatically trigger a left-click on the first "0" tile
     private void clickFirstZeroTile() {
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
+                //finds first cell with 0 neighbours & reveals it
                 if (mainBoard.cellGrid[x][y].getNeighbours() == 0) {
                     JButton button = getButtonAtCoordinates(x, y);
                     revealZeroNeighbours(x, y);
@@ -354,14 +360,18 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         // Places top-left button 100px down and 100px right
         int buttonYPosition = 0;
         int buttonXPosition = 0;
+        
+        /** to easily access buttons, each button is assigned a special name that is the button's coordinates
+         *  for example, consider the JButton "1503". This is treated as (03,15)
+         * using modulo and division+rounding, this cell would be 15 down and 3 across in the board, starting at 000.
+         */
 
         // Creates a grid of buttons
         for (int buttonYCount = 0; buttonYCount < gridSize; buttonYCount++) {
             for (int buttonXCount = 0; buttonXCount < gridSize; buttonXCount++) {
                 // Code to generate a new JButton
-                gridButton = new JButton("" + buttonLabel);
-                // gridButton.setText(buttonLabel.toString()); // Takes Integer and sets gridbutton name to Integer
-                gridButton.setFont(new Font("Dialog", Font.PLAIN, 0));
+                gridButton = new JButton("" + buttonLabel); //sets JButton name to number
+                gridButton.setFont(new Font("Dialog", Font.PLAIN, 0)); //sets font for testing, hides text
                 gridButton.setBounds(buttonXPosition, buttonYPosition, buttonSize, buttonSize); // Sets button size and position
                 gridButton.setFocusable(false);
                 gridButton.addActionListener(this);
@@ -389,26 +399,22 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
             buttonLabel += 100; // Increases by 100 when moving downwards
         }
-        Menu menuClassHandler = new Menu(this, gridSize, buttonSize, mineCount);
+        Menu menuClassHandler = new Menu(this, gridSize, buttonSize, mineCount); //sets up menu class
 
-        menuSetup(menuClassHandler);
+        menuSetup(menuClassHandler); //creates JMenu
 
         // Setting up JFrame
         setTitle("JoLe");
-        this.getContentPane().setPreferredSize(new Dimension(gridSize * buttonSize, gridSize * buttonSize));
+        this.getContentPane().setPreferredSize(new Dimension(gridSize * buttonSize, gridSize * buttonSize)); //sets window size as scalable to difficulty/button size
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(false); //players cannot resize window
         this.pack();
         this.toFront(); // Brings the panel to the front of the desktop
         this.setVisible(true);
     }
-
-    /**
-     * Sets up the game's menu with difficulty, size, theme, and other options.
-     * 
-     * @param menuClassHandler An instance of the Menu class to handle menu actions.
-     */
+    
+    //basic menu setup
     void menuSetup(Menu menuClassHandler) {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
@@ -473,18 +479,17 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     }
 
     public void setImage(int buttonXCount, int buttonYCount){
-        int mineAmount = mainBoard.cellGrid[buttonXCount][buttonYCount].getNeighbours(); //returns the amount of neighbours for an integer
+        int mineAmount = mainBoard.cellGrid[buttonXCount][buttonYCount].getNeighbours(); //finds the number of neighbouring mines
         if (mainBoard.cellGrid[buttonXCount][buttonYCount].isMine()) {
-            icon = mineIcon;
+            icon = mineIcon; //sets mines as mineIcon
         } else {
-
+            //creates suffix that changes which image file is referenced if using large mode
             String gridSizeSuffix = "";
             if (buttonSize == 50) {
                 gridSizeSuffix = "L";
                 flagIcon = new ImageIcon("flagL.png");
                 mineIcon = new ImageIcon("mineL.png");
-                particleAdjustY = -20;
-
+                particleAdjustY = -20; //minor math adjustment to allow particle effect to be centred
             }
             switch (mineAmount) {
                     //each case allows for a different image to be used for each button
@@ -493,6 +498,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
                     break;
                 case 1:
+                    //if icon is large, adds suffix of "L" into string name, else leaves blank
                     icon = new ImageIcon("number_1" + gridSizeSuffix + ".png");
                     rolloverIcon = new ImageIcon("number_1H" + gridSizeSuffix + ".png");
                     break;
@@ -539,25 +545,26 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
             return;
         }
 
-        Cells cell = mainBoard.cellGrid[x][y];
+        Cells cell = mainBoard.cellGrid[x][y]; //sets cell to referenced cell
 
         if (cell.getShown()) {
             // Cell already revealed
             return;
         }
 
-        cell.setShown(true);
+        cell.setShown(true); //reveals cell
 
-        JButton button = getButtonAtCoordinates(x, y);
-        button.setIcon(cell.getIcon());
-        button.setRolloverIcon(cell.getRollover());
+        JButton button = getButtonAtCoordinates(x, y); //finds the JButton for the cell
+        button.setIcon(cell.getIcon()); //sets icon to stashed icon
+        button.setRolloverIcon(cell.getRollover()); //sets rollover to stashed rollover
 
+        //if this cell has no neighbours, reveals all neighbours to this cell
         if (cell.getNeighbours() == 0) {
             // Recursively reveal neighboring cells
             for (int revealY = y - 1; revealY <= y + 1; revealY++) {
                 for (int revealX = x - 1; revealX <= x + 1; revealX++) {
                     if (revealX != x || revealY != y) {
-                        revealZeroNeighbours(revealX, revealY);
+                        revealZeroNeighbours(revealX, revealY); //runs this method again, passing it neighbour coordinates
                     }
                 }
             }

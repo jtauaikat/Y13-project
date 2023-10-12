@@ -1,13 +1,14 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 03/10/23
- * Tidying Code + Implementation of final menu and particles
+ * 12/10/23
+ * Commenting
  */
 public class RunGame
 {
     MainLoop gameInit;
     public RunGame()
     {
+        //basic class to start game
         gameInit = new MainLoop();
     }
 }

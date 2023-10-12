@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 29/06/23
- * Implementing board class
+ * 12/10/23
+ * Commenting
  */
 
 import java.util.Random;
@@ -51,18 +51,19 @@ public class Board {
         }
     }
     
+    //test method for showing hidden board
     void testPrint() {
         //System.out.println('\u000c');
         for (int yModifier = 0; yModifier < gridSize; yModifier++) {
             for (int xModifier = 0; xModifier < gridSize; xModifier++) {
                 if(cellGrid[xModifier][yModifier].getShown()){
-                    System.out.print("S ");
+                    System.out.print("S "); //uses S for shown
                 }else if (cellGrid[xModifier][yModifier].getFlagged()){
-                    System.out.print("F ");
+                    System.out.print("F "); //uses F for flagged
                 }else if (cellGrid[xModifier][yModifier].isMine()){
-                    System.out.print("M ");
+                    System.out.print("M "); //uses M for mine
                 }else{
-                    System.out.print(cellGrid[xModifier][yModifier].getNeighbours()+" ");
+                    System.out.print(cellGrid[xModifier][yModifier].getNeighbours()+" "); //shows neighbour count
                 }
             }
             System.out.println();
@@ -70,10 +71,12 @@ public class Board {
         System.out.println();
     }
     
+    //randomly generates mine placement
     void mineAsign() {
         int mineGenX;
         int mineGenY;
         int mineGenCount = 0;
+        //forces set amount of mines to always generate
         while (mineGenCount < maxMines) {
             mineGenX = rand.nextInt(gridSize); // Generates a random X coordinate for a mine
             mineGenY = rand.nextInt(gridSize); // Generates a random Y coordinate for a mine

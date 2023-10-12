@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 20/07/23
- * Adding menu systems
+ * 12/10/23
+ * Commenting
  */
 import java.awt.Image;
 import javax.swing.JButton;
@@ -20,7 +20,8 @@ public class Cells {
     private String name;
     private ImageIcon icon;
     private ImageIcon rollover;
-     
+    
+    //creates basic cell
     public Cells(int importGridSize) {
         gridSize = importGridSize;
         isFlagged = false;
@@ -29,33 +30,35 @@ public class Cells {
         icon = null;
         rollover = null;
     }
-
+    //returns X coordinate
     public void getX(int forLoopX) {
         this.xCoordinate = forLoopX;
     }
-
+    //returns Y coordinate
     public void getY(int forLoopY) {
         this.yCoordinate = forLoopY;
     }
-
+    //returns if is mine
     public boolean isMine() {
         return isMine;
     }
-
+    //sets cell to be mine
     public void setMine() {
         this.isMine = true;
     }
-
+    //returns number of neighbouring mines
     public int getNeighbours() {
         return this.neighbourCount;
     }
 
     public void setNeighbours(int xMod, int yMod, Cells[][] board) {
-        // Calculates the number of neighboring cells with mines
+        // looks at 9x9 grid around cell
         for (int ySurroundCell = -1; ySurroundCell <= 1; ySurroundCell++) {
             for (int xSurroundCell = -1; xSurroundCell <= 1; xSurroundCell++) {
+                //if within boundaries and not flagged
                 if (yMod + ySurroundCell >= 0 && yMod + ySurroundCell < gridSize
                         && xMod + xSurroundCell >= 0 && xMod + xSurroundCell < gridSize && !isFlagged) {
+                    //if the neighbour is a mine, adds 1 to neighbourCount
                     if (board[xMod + xSurroundCell][yMod + ySurroundCell].isMine()) {
                         neighbourCount++;
                     }
