@@ -31,7 +31,7 @@ public class Board {
         boardFirstGen(); // Generates the initial cell grid
         mineAsign(); // Assigns mines to the cells
         boardSecondGen(); // Generates the neighbors for each cell
-        testPrint(); // Prints the grid for testing purposes
+        //testPrint(); // Prints the grid for testing purposes
         maxMines = mineCount;
     }
     

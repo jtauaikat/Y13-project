@@ -2,6 +2,8 @@
  * by Joshua Toumu'a & Leo Riginelli
  * 12/10/23
  * Commenting
+ * 
+ * Sprites used are created by Leo Riginelli.
  */
 
 // Import necessary classes and packages
@@ -243,7 +245,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
         if (mineTally == mineCount) {
             // If all non-mine cells are revealed, show a pop-up message indicating the win
             JOptionPane.showMessageDialog(this, "Congratulations! You've won!");
-            restartGame(); // Restart the game after winning
+            restartGameInMenu(buttonSize, gridSize, mineCount); // Restart the game after winning
         }
     }
 
@@ -279,7 +281,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                         public void actionPerformed(ActionEvent e) {
                             JOptionPane.showMessageDialog(MainLoop.this, "You've hit a mine! Game Over.");
                             lossTimer.stop();
-                            restartGame(); // Restart the game after the loss
+                            restartGameInMenu(buttonSize, gridSize, mineCount); // Restart the game after the loss
                         }
                     });
                 lossTimer.setRepeats(false); // Execute the action only once
