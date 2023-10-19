@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 12/10/23
- * Commenting
+ * 19/10/23
+ * Minor bug fix
  * 
  * Sprites used are created by Leo Riginelli.
  */
@@ -49,6 +49,8 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
     int particleAdjust = 4; // Particle adjustment for X-coordinate
     int particleAdjustY = 4; // Particle adjustment for Y-coordinate
     Scanner keyboard = new Scanner(System.in);
+    
+    Menu menuClassHandler;
 
     // ArrayList to store particles
     private ArrayList<Particle> particles = new ArrayList<>();
@@ -266,19 +268,22 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
                 }
             }
         }
-        //if player loses, create particles on button
+        //if player loses, create particles on buttonr
         if (lossState) {
             int xPos = getButtonAtCoordinates(mineX, mineY).getX() + buttonSize / 2;
             int yPos = getButtonAtCoordinates(mineX, mineY).getY() + buttonSize * 2;
 
             // Create particles at the mine position
             createParticles(xPos, yPos, 50);
+            
+            menuClassHandler.setTimerToggle(true); //freezes restart in menu to prevent restarting early, duplicating the window
 
             // If a mine cell is revealed, show a pop-up message indicating the loss after a delay
             if (lossTimer == null) {
                 lossTimer = new Timer(1000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            menuClassHandler.setTimerToggle(false); //unfreezes restart in menu
                             JOptionPane.showMessageDialog(MainLoop.this, "You've hit a mine! Game Over.");
                             lossTimer.stop();
                             restartGameInMenu(buttonSize, gridSize, mineCount); // Restart the game after the loss
@@ -401,7 +406,7 @@ public class MainLoop extends JFrame implements ActionListener, MouseListener {
 
             buttonLabel += 100; // Increases by 100 when moving downwards
         }
-        Menu menuClassHandler = new Menu(this, gridSize, buttonSize, mineCount); //sets up menu class
+        menuClassHandler = new Menu(this, gridSize, buttonSize, mineCount); //sets up menu class
 
         menuSetup(menuClassHandler); //creates JMenu
 
