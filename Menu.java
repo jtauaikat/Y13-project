@@ -1,7 +1,7 @@
 /**
  * by Joshua Toumu'a & Leo Riginelli
- * 12/10/23
- * Commenting
+ * 19/10/23
+ * Minor bug fix
  */
 
 import java.awt.event.*;
@@ -66,7 +66,7 @@ public class Menu implements ActionListener
                 dialogBox();
                 break;
             case "restart":
-                mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeButtonSize); //resets game
+                mainLoop.restartGameInMenu(storeButtonSize,storeGridSize, storeMineCount); //resets game
                 break;
             case "quit":
                 //closes terminal
