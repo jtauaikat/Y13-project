@@ -2,7 +2,6 @@
  * by Joshua Toumu'a & Leo Riginelli
  * 19/10/23
  * Minor bug fix
- * 
  * Sprites used are created by Leo Riginelli.
  */
 
